@@ -1,15 +1,7 @@
 /* Doubly Linked List implementation */
 #include<stdio.h>
 #include<stdlib.h>
-
-typedef struct card Card;
-
-struct card
-{
-    char suit;
-    char rank;
-    int visibility;
-};
+#include "CardDeck.h"
 
 struct Node  {
     Card card;
