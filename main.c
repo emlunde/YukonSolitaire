@@ -1,59 +1,96 @@
 #include <stdio.h>
 #include "DoublyLinkedList.h" //
-enum suits  {A,S,D,C};
+enum suits  {A,C,D,S};
 
-
+/*
 Node* newDLL(){
     Node* head = malloc(sizeof (Node));
     head->prev=NULL;
     head->next=NULL;
     return head;
-}
+} */
 
-Node* createTestDeck(){
-    Node* head = newDLL();
+void createTestDeck(){
 
     // A setup of for-loops creates the 13 cards from each of the 4 suits
-    for(int x=A; x<=C; x++){
-        for(int i=0; i<13; i++){
-            // Aces assigned and added first
+    for(int x=A; A<=S; x++){
+        for(int i=0; i<=13; i++){
             Card new;
-            new.suit = conve;
-            new.rank = 0;
-            insertFromHead(new);
-            head = head->next;
+            // For assigning the aces card in the respective suit
+            if(i==0){
+                new.suit = x;
+                new.rank = "0";
+                printf("Printing from aces assign: %c %c \n",new.suit,new.rank);
+            }
+                // For cards 1 through K in the specific suit
+            switch(i) {
+                case 1:
+                    new.rank = "1";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
 
-                // For cards 1 through 9 in the specific suit
-                for(i>0;i<10;i++){
-                    new.rank = i;
-                    insertFromHead(new);
-                    head = head->next;
-                }
-                // For cards T through K in the specific suit
-                for(int i=10;i<14; i++){
-                    switch (i) {
-                        case 10:
-                            new.rank = "T";
-                            insertFromHead(new);
-                            head = head->next;
-                        case 11:
-                            new.rank = "J";
-                            insertFromHead(new);
-                            head = head->next;
-                        case 12:
-                            new.rank = "Q";
-                            insertFromHead(new);
-                            head = head->next;
-                        case 13:
-                            new.rank = "K";
-                            insertFromHead(new);
-                            head = head->next;
+                case 2:
+                    new.rank = "2";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
 
-                    }
-                }
+                case 3:
+                    new.rank = "3";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+
+                case 4:
+                    new.rank = "4";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+
+                case 5:
+                    new.rank = "5";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+
+                case 6:
+                    new.rank = "6";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+
+                case 7:
+                    new.rank = "7";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+
+                case 8:
+                    new.rank = "8";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+
+                case 9:
+                    new.rank = "9";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+
+                case 10:
+                    new.rank = "T";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                break;
+
+                case 11:
+                    new.rank = "J";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+
+                case 12:
+                    new.rank = "Q";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+
+                case 13:
+                    new.rank = "K";
+                    printf("Printing from switch case: %d %c \n",i,new.rank);
+                    break;
+            }
         }
     }
-    return head;
 }
 
 

@@ -21,7 +21,7 @@ struct node  {
 void traverseListFromHead(Node *head){
     while(head->next!=NULL){
         printf("%c,%c,Is visible: %d",head->card.suit,head->card.rank,head->card.visibility);
-        head = head->next;
+       // head = head->next;
     }
 }
 void traverseListFromTail(){}
