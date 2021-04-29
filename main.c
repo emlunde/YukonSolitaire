@@ -135,8 +135,8 @@ struct node* createTestDeck(){
 int main() {
     Node* head;
     head = createTestDeck();
-    printf("---------------------------------- createTestDeck() complete -------------\n");
-    printf("Traversing linked list\n");
+    printf("------------------ createTestDeck() complete ------------------\n");
+    printf("### Traversing linked list ### \n");
     traverseList(head);
     return 0;
 }
