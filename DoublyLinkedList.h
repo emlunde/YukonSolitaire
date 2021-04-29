@@ -27,12 +27,12 @@ struct node* createNewNode(){
 void traverseList(Node* head){
     // Print from head to tail
     while(head->next!=NULL){
-        printf("%c%c,Is visible: %d \n",head->card.suit,head->card.rank,head->card.visibility);
+        printf("%c%c - Vis:%d \t",head->card.suit,head->card.rank,head->card.visibility);
         head = head->next;
     }
     // Print the tail
     if(head->next==NULL){
-        printf("%c%c,Is visible: %d \n",head->card.suit,head->card.rank,head->card.visibility);
+        printf("%c%c - Vis:%d \n",head->card.suit,head->card.rank,head->card.visibility);
     }
 }
 void insertNew(Node* head, Node* new){

@@ -16,10 +16,16 @@ struct node* createTestDeck(){
         for(int i=0; i<=13; i++){
 
             // For assigning the aces card in the respective suit
-            if(i==0){
+            if(i==0 && index==1){
                 temp_card.rank ='A';
                 head->card = temp_card;
-                printf("Printing from aces assign: %c%c \n", head->card.suit, head->card.rank);
+                printf("\n %c%c \t", head->card.suit, head->card.rank);
+            } else if(index>=1&&i==0){
+                temp_card.rank = 'A';
+                temp = createNewNode();
+                temp->card = temp_card;
+                insertNew(head,temp);
+                printf(" %c%c \t",temp->card.rank,temp->card.suit);
             }
                 // For cards 1 through K in the specific suit
             if(i>0){
@@ -32,7 +38,7 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 3:
@@ -40,7 +46,7 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 4:
@@ -48,7 +54,7 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 5:
@@ -56,7 +62,7 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 6:
@@ -64,7 +70,7 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 7:
@@ -72,7 +78,7 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 8:
@@ -80,7 +86,7 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 9:
@@ -88,7 +94,7 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 10:
@@ -96,7 +102,7 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                 break;
 
                 case 11:
@@ -104,23 +110,23 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 12:
-                    temp->card.rank = 'Q';
+                    temp_card.rank = 'Q';
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 13:
-                    temp->card.rank = 'K';
+                    temp_card.rank = 'K';
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf("Printing from switch case %d: %c%c \n", i, temp->card.suit, temp->card.rank);
+                    printf(" %c%c \t\n",temp->card.rank,temp->card.suit);
                     break;
 
                 default:
@@ -130,13 +136,15 @@ struct node* createTestDeck(){
         }
     } return head;
 }
-
-
-int main() {
+void testDeck(){
     Node* head;
     head = createTestDeck();
     printf("------------------ createTestDeck() complete ------------------\n");
-    printf("### Traversing linked list ### \n");
+    printf("### Traversing linked list ### \n \t");
     traverseList(head);
+}
+
+int main() {
+    testDeck();
     return 0;
 }
