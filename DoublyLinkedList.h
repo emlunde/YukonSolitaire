@@ -1,4 +1,4 @@
-/* Doubly Linked List implementation */
+/* Doubly Linked List implementation by @KasperBaun */
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -14,19 +14,41 @@ struct card
 
 struct node  {
     Card card;
-    struct Node* next;
-    struct Node* prev;
+     Node* next;
+     Node* prev;
 };
-
-void traverseListFromHead(Node *head){
+// TODO : Implement this
+struct node* createNewNode(){
+    Node *newDLL = (Node*) malloc(sizeof(Node));
+    newDLL->next=NULL;
+    newDLL->prev=NULL;
+    return newDLL;
+}
+void traverseList(Node* head){
+    // Print from head to tail
     while(head->next!=NULL){
-        printf("%c,%c,Is visible: %d",head->card.suit,head->card.rank,head->card.visibility);
-       // head = head->next;
+        printf("%c%c,Is visible: %d \n",head->card.suit,head->card.rank,head->card.visibility);
+        head = head->next;
+    }
+    // Print the tail
+    if(head->next==NULL){
+        printf("%c%c,Is visible: %d \n",head->card.suit,head->card.rank,head->card.visibility);
     }
 }
-void traverseListFromTail(){}
-void insertFromHead(){}
-void inserFromTail(){}
+void insertNew(Node* head, Node* new){
+    // Find tail
+    while(head->next!=NULL){
+        head = head->next;
+    }
+    // Insert new node at tail
+    if(head->next==NULL){
+
+        head->next = new;
+        new->prev = head;
+        new->next = NULL;
+    }
+}
+
 void deleteNode(){}
 void searchFromHead(){}
 void searchFromTail(){}
