@@ -90,4 +90,3 @@ struct node* deleteNode(Node* head, Node* node){
 }
 // TODO : Implement this
 void updateNode(){}
-void sortListByIndex(){}
