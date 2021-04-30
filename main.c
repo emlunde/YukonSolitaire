@@ -19,13 +19,11 @@ struct node* createTestDeck(){
             if(i==0 && index==1){
                 temp_card.rank ='A';
                 head->card = temp_card;
-                printf("\n %c%c \t", head->card.suit, head->card.rank);
             } else if(index>=1&&i==0){
                 temp_card.rank = 'A';
                 temp = createNewNode();
                 temp->card = temp_card;
                 insertNew(head,temp);
-                printf(" %c%c \t",temp->card.rank,temp->card.suit);
             }
                 // For cards 1 through K in the specific suit
             if(i>0){
@@ -38,7 +36,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 3:
@@ -46,7 +43,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 4:
@@ -54,7 +50,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 5:
@@ -62,7 +57,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 6:
@@ -70,7 +64,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 7:
@@ -78,7 +71,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 8:
@@ -86,7 +78,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 9:
@@ -94,7 +85,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 10:
@@ -102,7 +92,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                 break;
 
                 case 11:
@@ -110,7 +99,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 12:
@@ -118,7 +106,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t",temp->card.rank,temp->card.suit);
                     break;
 
                 case 13:
@@ -126,7 +113,6 @@ struct node* createTestDeck(){
                     temp = createNewNode();
                     temp->card = temp_card;
                     insertNew(head,temp);
-                    printf(" %c%c \t\n",temp->card.rank,temp->card.suit);
                     break;
 
                 default:
@@ -136,15 +122,43 @@ struct node* createTestDeck(){
         }
     } return head;
 }
+void printDeck(Node* head){
+    while(head!=NULL){
+        printf("%c%c\t",head->card.rank,head->card.suit);
+        head=head->next;
+    }
+}
 void testDeck(){
     Node* head;
     head = createTestDeck();
     printf("------------------ createTestDeck() complete ------------------\n");
-    printf("### Traversing linked list ### \n \t");
+    printf("### Traversing linked list ### \n");
     traverseList(head);
+}
+void testSearchAndDelete(){
+    Node* head;
+    Node* deleteTest;
+    Card card,card2,card3;
+    card.rank = 'A';
+    card.suit = 'A';
+    head = createTestDeck();
+    deleteTest = searchForCard(head,card);
+    printf("------------- Test # 1: createTestDeck() and search for card AA -------------\n");
+    printf("AA's ptr*: %d\n",deleteTest);
+    traverseList(head);
+    printf("------------- Test #1 concluded - AA's ptr* should be in the traversal list -------------\n");
+
+    printf("------------- Test # 2: delete card AA -------------\n");
+    head = deleteNode(head,deleteTest);
+    traverseList(head);
+    printf("------------- Test # 2: card AA should no longer be in set -------------\n");
 }
 
 int main() {
-    testDeck();
+    //testDeck();
+    //testSearchAndDelete();
+    Node* head = createTestDeck();
+    printDeck(head);
+
     return 0;
 }
