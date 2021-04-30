@@ -4,20 +4,17 @@
 
 typedef struct card Card;
 typedef struct node Node;
-
 struct card
 {
     char suit;
     char rank;
     int visibility;
 };
-
 struct node  {
     Card card;
      Node* next;
      Node* prev;
 };
-
 struct node* createNewNode(){
     Node *newDLL = (Node*) malloc(sizeof(Node));
     newDLL->next=NULL;
@@ -47,7 +44,6 @@ void insertNew(Node* head, Node* new){
         new->next = NULL;
     }
 }
-// TODO : Implement this
 struct node* searchForCard(Node* head, Card card){
     while(head != NULL) {
        // If the card is found in the list ptr to the node containing rank and suit is returned
@@ -92,6 +88,6 @@ struct node* deleteNode(Node* head, Node* node){
         head = head->next;
     }
 }
-
+// TODO : Implement this
 void updateNode(){}
 void sortListByIndex(){}
