@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <vss.h>
 
-const char * ERROR_TOO_MANY_ARGUMENTS = "INVALID INPUT: Too many arguments in input command";
+const char ERROR_TOO_MANY_ARGUMENTS[] = "INVALID INPUT: Too many arguments in input command";
 
 char *funcQ();
 char *funcP();
@@ -15,9 +14,9 @@ char *funcSW();
 char *funcLD(char *arg2);
 
 
-bool filenameIsValid(char *filename);
+int filenameIsValid(char *filename);
 
-bool fileContentIsValid(char *filename);
+int fileContentIsValid(char *filename);
 
 /// Selector method for the entered command.
 /// Returns "OK" or an error message, depending on result.
@@ -39,24 +38,39 @@ char * cmdSelector(char * cmd) {
         return funcLD(cmdArg2);                       //returns "OK" if success, and an error message otherwise
     }
     else if (!strcmp(token, "SW")) {
+        if (cmdArg2 != NULL) {                        //SW should only take one argument
+            return ERROR_TOO_MANY_ARGUMENTS;
+        }
         return funcSW();
     }
     else if (!strcmp(token, "SI")) {
         return funcSI(cmdArg2);
     }
     else if (!strcmp(token, "SR")) {
+        if (cmdArg2 != NULL) {                        //SR should only take one argument
+            return ERROR_TOO_MANY_ARGUMENTS;
+        }
         return funcSR();
     }
     else if (!strcmp(token, "SD")) {
         return funcSD(cmdArg2);
     }
     else if (!strcmp(token, "QQ")) {
+        if (cmdArg2 != NULL) {                        //QQ should only take one argument
+            return ERROR_TOO_MANY_ARGUMENTS;
+        }
         return funcQQ();
     }
     else if (!strcmp(token, "P")) {
+        if (cmdArg2 != NULL) {                        //P should only take one argument
+            return ERROR_TOO_MANY_ARGUMENTS;
+        }
         return funcP();
     }
     else if (!strcmp(token, "Q")) {
+        if (cmdArg2 != NULL) {                        //Q should only take one argument
+            return ERROR_TOO_MANY_ARGUMENTS;
+        }
         return funcQ();
     }
 //    todo: game moves
@@ -91,14 +105,14 @@ char *funcLD(char * filename) {
     }
 }
 
-/// used in funcLD to check if file with name exists
-bool fileContentIsValid(char *filename) {
+/// used in funcLD to check if file with name exists. Returns FALSE, 0, or TRUE, 1.
+int fileContentIsValid(char *filename) {
     //todo implement
     return 0;
 }
 
-/// used in func LD to check if file content is valid
-bool filenameIsValid(char *filename) {
+/// used in func LD to check if file content is valid. Returns FALSE, 0, or TRUE, 1.
+int filenameIsValid(char *filename) {
     //todo implement
     return 0;
 }
