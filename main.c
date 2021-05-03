@@ -6,6 +6,14 @@
 void printStartPosition(){
 
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+
+    int boardHeight = 0;
+    for (int i = 0; i < 7; ++i) {
+        if (length(C[i]) > boardHeight) {
+
+        }
+    }
+
     printf("\t\t\t\t\t\t\t\t[]\tF1\n");
     printf("\t\t\t\t\t\t\t\t\n");
     printf("\t\t\t\t\t\t\t\t[]\tF2\n");
@@ -42,19 +50,19 @@ int main() {
     printStartPosition();
 
 
-    while(1) {
-        printf("Please input command or move: ");
-        char inputStr[100];
-        gets(inputStr);
-    //    char testStr[100] = "LD filenameTest3";
-        //TODO: delete ... this was for testing Commands.h's functions
-        char * result = cmdSelector(inputStr);
-        printf("\nresult: %s\n",result);
-
-        if(strcmp(inputStr, "QQ") && strcmp(result,"OK")) {
-            break;
-        }
-    }
+//    while(1) {
+//        printf("Please input command or move: ");
+//        char inputStr[100];
+//        gets(inputStr);
+//    //    char testStr[100] = "LD filenameTest3";
+//        //TODO: delete ... this was for testing Commands.h's functions
+//        char * result = cmdSelector(inputStr);
+//        printf("\nresult: %s\n",result);
+//
+//        if(strcmp(inputStr, "QQ") && strcmp(result,"OK")) {
+//            break;
+//        }
+//    }
 //    testSearchAndDelete();
     return 0;
 }
