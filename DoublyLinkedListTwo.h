@@ -59,7 +59,7 @@ void insertNew(Node* head, Node* new){
 struct node* getNodeAndAllFollowingNodes(){
 
 }
-//todo: create function for getFromIndex() //starting at head=0
+// Gets a pointer to the node in index = int index - is tested with testGetFromIndex()
 struct node* getFromIndex(Node* head, int index){
     while (head!=NULL){
         head=head->next;
