@@ -160,3 +160,32 @@ void testSearchAndDelete(){
     traverseList(head);
     printf("------------- Test # 2: card AC should no longer be in set -------------\n");
 }
+void testGetTail(){
+    Node* head = createTestDeck();
+    printf("Printing deck:\n");
+    printDeck(head);
+    printf("\nPrinting tail:\n");
+    printNode(getTail(head));
+}
+void testInsertLinkedListAtEnd(){
+    Node* head = createTestDeck();
+    printf("Printing deck:\n");
+    printDeck(head);
+    printf("\nInserting node as new tail:\n");
+    Node* newNode = createNewNode();
+    setCard(newNode,'7','D',0);
+    printNode(newNode);
+    insertLinkedListAtEnd(head,newNode);
+    printf("\n New node should now be attached to the old tail:\n");
+    printDeck(head);
+    printf("\n Printing node again - pointers should be updated here:\n");
+    printNode(newNode);
+}
+void testGetFromIndex(){
+    Node* head = createTestDeck();
+    printf("Printing deck with index:\n");
+    traverseList(head);
+    printf("Printing getFromIndex(head, 34): \n");
+    printNode(getFromIndex(head,34));
+
+}

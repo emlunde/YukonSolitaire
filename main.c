@@ -84,8 +84,10 @@ void updatePosition(){
 
 int main() {
 
-    printStartPosition();
-
+    //printStartPosition();
+//testGetTail();
+//testInsertLinkedListAtEnd();
+testGetFromIndex();
 
 //    while(1) {
 //        printf("Please input command or move: ");
