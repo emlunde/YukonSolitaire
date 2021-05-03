@@ -11,11 +11,9 @@ char *funcSD(char *arg2);
 char *funcSR();
 char *funcSI(char *arg2);
 char *funcSW();
-char *funcLD(char *arg2);
-
+char *funcLD(char * filename);
 
 int filenameIsValid(char *filename);
-
 int fileContentIsValid(char *filename);
 
 /// Selector method for the entered command.
