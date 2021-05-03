@@ -6,10 +6,17 @@ typedef struct card Card;
 typedef struct node Node;
 struct card
 {
-    char suit;
-    char rank;
-    int visibility;
+    char suit;          //C,D,H,S
+    char rank;          //A,2,3,4,5,6,7,8,9,T,J,Q,K
+    int visibility;     //0 means notVisible. 1 means visible.
 };
+
+void setCard(Card* c, char rank, char suit, int visibility) {
+    c->suit = suit;
+    c->rank = rank;
+    c->visibility = visibility;
+}
+
 struct node  {
     Card card;
     Node* next;
@@ -53,7 +60,7 @@ void insertNew(Node* head, Node* new){
 
 //todo: create function for getFromIndex() //starting at head=0
 
-struct node* searchForCard(Node* head, Card card){
+struct node* getNodeFromCard(Node* head, Card card){
     while(head != NULL) {
         // If the card is found in the list ptr to the node containing rank and suit is returned
         if (head->card.rank == card.rank & head->card.suit == card.suit) {
@@ -63,6 +70,20 @@ struct node* searchForCard(Node* head, Card card){
     }   printf("Node not found in list - return 0\n");
     return 0;
 }
+
+struct node* getNodeFromCardRankAndSuit(Node* head, char rank, char suit){
+    while(head != NULL) {
+        // If the card is found in the list ptr to the node containing rank and suit is returned
+        if (head->card.rank == rank & head->card.suit == suit) {
+            return head;
+        }
+        head =  head->next;
+    }   printf("Node not found in list - return 0\n");
+    return 0;
+}
+
+
+
 struct node* deleteNode(Node* head, Node* node){
     struct node* staticHead = head;
     while(head != NULL) {
@@ -107,3 +128,16 @@ int countElements(Node* head){
 }
 // TODO : Implement this
 void updateNode(){}
+
+
+
+//Node * node = createNewNode();
+//setCard(&node->card,'7','D',1);
+//insertNew(head, node);
+
+
+void quickInsertCard(Node* listHead, char rank, char suit) {
+    Node * node = createNewNode();
+    setCard(&node->card,rank,suit,0);
+    insertNew(listHead, node);
+}

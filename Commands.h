@@ -88,6 +88,7 @@ char * cmdSelector(char * cmd) {
 
 //___funcLD______________________________________________________________________________v
 //EXAMPLE OF IMPLEMENTATION ...
+//Filehandling
 char *funcLD(char * filename) {
     if (filename == NULL) {
         //todo: implement loading of unshuffled deck.
@@ -130,6 +131,7 @@ char *funcSR() {
     return NULL;
 }
 
+//Filehandling
 char *funcSD(char *arg2) {
     return NULL;
 }
