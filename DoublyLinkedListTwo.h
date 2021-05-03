@@ -44,6 +44,12 @@ void insertNew(Node* head, Node* new){
         new->next = NULL;
     }
 }
+
+//todo: create function for getNodeAndAllFollowingNodes()
+
+//todo: create function for insertLinkedListAtEnd()
+
+
 struct node* searchForCard(Node* head, Card card){
     while(head != NULL) {
         // If the card is found in the list ptr to the node containing rank and suit is returned
