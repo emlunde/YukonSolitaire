@@ -16,15 +16,15 @@ struct node  {
     Node* prev;
 };
 struct node* createNewNode(){
-    Node *newDLL = (Node*) malloc(sizeof(Node));
-    newDLL->next=NULL;
-    newDLL->prev=NULL;
-    return newDLL;
+    Node *newNode = (Node*) malloc(sizeof(Node));
+    newNode->next=NULL;
+    newNode->prev=NULL;
+    return newNode;
 }
 void traverseList(Node* head){
     // Print from head to tail
     while(head!=NULL){
-        printf("%c%c - Vis:%d - *prev: %d - *next: %d \n",head->card.rank,head->card.suit,head->card.visibility,head->prev,head->next);
+        printf("%c%c - Vis:%d - *prev: %8d - *next: %8d \n",head->card.rank,head->card.suit,head->card.visibility,head->prev,head->next);
         head = head->next;
     }
     /* Print the tail

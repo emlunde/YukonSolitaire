@@ -13,9 +13,9 @@ struct node* createTestDeck(){
     temp_card.visibility=0;
     // A setup of for-loops creates the 13 cards from each of the 4 suits
     for(int index=1; index<=4; index++){
-        if(index==1) temp_card.suit = 'A';
-        if(index==2) temp_card.suit = 'C';
-        if(index==3) temp_card.suit = 'D';
+        if(index==1) temp_card.suit = 'C';
+        if(index==2) temp_card.suit = 'D';
+        if(index==3) temp_card.suit = 'H';
         if(index==4) temp_card.suit = 'S';
 
         for(int i=0; i<=13; i++){
@@ -30,7 +30,7 @@ struct node* createTestDeck(){
                 temp->card = temp_card;
                 insertNew(head,temp);
             }
-            // For cards 1 through K in the specific suit
+            // For cards 2 through K in the specific suit
             if(i>0){
                 switch(i) {
                     case 1:
@@ -141,21 +141,22 @@ void testDeck(){
     printf("### Traversing linked list ### \n");
     traverseList(head);
 }
+// Todo: make test-case for card in the middle and tail
 void testSearchAndDelete(){
     Node* head;
     Node* deleteTest;
     Card card,card2,card3;
     card.rank = 'A';
-    card.suit = 'A';
+    card.suit = 'C';
     head = createTestDeck();
     deleteTest = searchForCard(head,card);
-    printf("------------- Test # 1: createTestDeck() and search for card AA -------------\n");
-    printf("AA's ptr*: %d\n",deleteTest);
+    printf("------------- Test # 1: createTestDeck() and search for card AC -------------\n");
+    printf("HA's ptr*: %d\n",deleteTest);
     traverseList(head);
-    printf("------------- Test #1 concluded - AA's ptr* should be in the traversal list -------------\n");
+    printf("------------- Test #1 concluded - AC's ptr* should be in the traversal list -------------\n");
 
-    printf("------------- Test # 2: delete card AA -------------\n");
+    printf("------------- Test # 2: delete card AC -------------\n");
     head = deleteNode(head,deleteTest);
     traverseList(head);
-    printf("------------- Test # 2: card AA should no longer be in set -------------\n");
+    printf("------------- Test # 2: card AC should no longer be in set -------------\n");
 }
