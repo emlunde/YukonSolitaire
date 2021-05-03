@@ -88,5 +88,13 @@ struct node* deleteNode(Node* head, Node* node){
         head = head->next;
     }
 }
+int countElements(Node* head){
+    int count;
+    while(head!=NULL){
+    count++;
+    head=head->next;
+    }
+    return count;
+}
 // TODO : Implement this
 void updateNode(){}
