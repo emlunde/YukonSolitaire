@@ -5,11 +5,22 @@
 
 void printStartPosition(){
 
+
     //todo: create start deck. create board from start deck.
 
     //todo: get column for each linked list, and create array 'C' with the 7 linked lists
+    //---OBS--- temp test below, see task above, and delete below when task is complete
+    //card has visibility, suit, and rank
+    Node * head = createNewNode();
+    setCard(&head->card,'8','S',1);
 
-    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    quickInsertCard(head, '7', 'D');
+    getNodeFromCardRankAndSuit(head,'7','D')->card.visibility = 1;
+
+    traverseList(head);
+    //---OBS--- _______________________________________________________________________
+
+    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
 
 //    //get needed height for board to be printed
 //    int boardHeight = 0;
@@ -22,6 +33,7 @@ void printStartPosition(){
     //temporary simplification. delete after fix
     int boardHeight=8;
 
+    //print for each row
     for (int i = 0; i < boardHeight; ++i) {
 
         printf("\t%2s\t%2s\t%2s\t%2s\t%2s\t%2s\t%2s\t", "AC","2C", "6D", "8H", "TS", "AD", "[]");
@@ -89,5 +101,9 @@ int main() {
 //        }
 //    }
 //    testSearchAndDelete();
+
+
+//    Node * head = createTestDeck();
+//    printDeck(head);
     return 0;
 }

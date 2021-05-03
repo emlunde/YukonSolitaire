@@ -149,7 +149,7 @@ void testSearchAndDelete(){
     card.rank = 'A';
     card.suit = 'C';
     head = createTestDeck();
-    deleteTest = searchForCard(head,card);
+    deleteTest = getNodeFromCard(head, card);
     printf("------------- Test # 1: createTestDeck() and search for card AC -------------\n");
     printf("HA's ptr*: %d\n",deleteTest);
     traverseList(head);
