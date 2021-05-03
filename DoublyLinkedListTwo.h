@@ -49,6 +49,9 @@ void insertNew(Node* head, Node* new){
 
 //todo: create function for insertLinkedListAtEnd()
 
+//todo: create function for getTail()
+
+//todo: create function for getFromIndex() //starting at head=0
 
 struct node* searchForCard(Node* head, Card card){
     while(head != NULL) {

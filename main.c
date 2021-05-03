@@ -5,23 +5,48 @@
 
 void printStartPosition(){
 
+    //todo: create start deck. create board from start deck.
+
+    //todo: get column for each linked list, and create array 'C' with the 7 linked lists
+
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
 
-    int boardHeight = 0;
-    for (int i = 0; i < 7; ++i) {
-        if (length(C[i]) > boardHeight) {
+//    //get needed height for board to be printed
+//    int boardHeight = 0;
+//    for (int i = 0; i < 7; ++i) {
+//        if (countElements(C[i]) > boardHeight) {
+//            boardHeight = countElements(C[i]);
+//        }
+//    }
 
+    //temporary simplification. delete after fix
+    int boardHeight=8;
+
+    for (int i = 0; i < boardHeight; ++i) {
+
+        printf("\t%2s\t%2s\t%2s\t%2s\t%2s\t%2s\t%2s\t", "AC","2C", "6D", "8H", "TS", "AD", "[]");
+
+        if (i == 0) {
+            printf("[]\tF1");
+        } else if (i == 2) {
+            printf("[]\tF2");
+        } else if (i == 4) {
+            printf("[]\tF3");
+        } else if (i == 6) {
+            printf("[]\tF4");
         }
+        printf("\n");
     }
 
-    printf("\t\t\t\t\t\t\t\t[]\tF1\n");
-    printf("\t\t\t\t\t\t\t\t\n");
-    printf("\t\t\t\t\t\t\t\t[]\tF2\n");
-    printf("\t\t\t\t\t\t\t\t\n");
-    printf("\t\t\t\t\t\t\t\t[]\tF3\n");
-    printf("\t\t\t\t\t\t\t\t\n");
-    printf("\t\t\t\t\t\t\t\t[]\tF4\n");
-    printf("\t\t\t\t\t\t\t\t\n");
+
+//    printf("\t\t\t\t\t\t\t\t[]\tF1\n");
+//    printf("\t\t\t\t\t\t\t\t\n");
+//    printf("\t\t\t\t\t\t\t\t[]\tF2\n");
+//    printf("\t\t\t\t\t\t\t\t\n");
+//    printf("\t\t\t\t\t\t\t\t[]\tF3\n");
+//    printf("\t\t\t\t\t\t\t\t\n");
+//    printf("\t\t\t\t\t\t\t\t[]\tF4\n");
+//    printf("\t\t\t\t\t\t\t\t\n");
     printf("LAST command: \n");
     printf("Message: \n");
     printf("INPUT > \n");
