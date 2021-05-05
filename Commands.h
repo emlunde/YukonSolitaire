@@ -93,6 +93,10 @@ char *funcLD(char * filename) {
         //todo: implement loading of unshuffled deck.
         return "OK";
     }
+
+    FILE *fPointer;
+
+    fPointer = fopen(*filename,"r");
     if (filenameIsValid(filename)) {
         if (fileContentIsValid(filename)) {
             //todo: implement loading deck from file.
@@ -112,9 +116,13 @@ int fileContentIsValid(char *filename) {
 }
 
 /// used in func LD to check if file content is valid. Returns FALSE, 0, or TRUE, 1.
-int filenameIsValid(char *filename) {
-    //todo implement
-    return 0;
+int filenameIsValid(char *fPointer) {
+    if (fPointer == NULL){
+        return 0;
+    } else {
+        return 1;
+    }
+
 }
 //_______________________________________________________________________________________^
 
