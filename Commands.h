@@ -96,10 +96,19 @@ char *funcLD(char * filename) {
 
     FILE *fPointer;
 
+    char cardDeck[52];
+
     fPointer = fopen(*filename,"r");
-    if (filenameIsValid(filename)) {
-        if (fileContentIsValid(filename)) {
-            //todo: implement loading deck from file.
+    if (filenameIsValid(fPointer)) {
+        if (fileContentIsValid(fPointer)) {
+            while (!feof(fPointer)){
+                fgets(cardDeck, 52, fPointer);
+                if (cardDeck[strlen(cardDeck)-1] == '\n'){
+                    cardDeck[strlen(cardDeck)-1] = 0;
+                }
+                //Create new node
+                //Copy data to tail
+            }
             return "OK";
         } else {
             return "Invalid file content"; //TODO make better error overview.
@@ -107,15 +116,17 @@ char *funcLD(char * filename) {
     } else {
         return "invalid filename";         //TODO make better error overview.
     }
-}
-
-/// used in funcLD to check if file with name exists. Returns FALSE, 0, or TRUE, 1.
-int fileContentIsValid(char *filename) {
-    //todo implement
-    return 0;
+    fclose(fPointer)
+    printf("\n")
 }
 
 /// used in func LD to check if file content is valid. Returns FALSE, 0, or TRUE, 1.
+int fileContentIsValid(char *fPointer) {
+
+    return 0;
+}
+
+/// used in funcLD to check if file with name exists. Returns FALSE, 0, or TRUE, 1.
 int filenameIsValid(char *fPointer) {
     if (fPointer == NULL){
         return 0;
