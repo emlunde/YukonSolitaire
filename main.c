@@ -98,29 +98,29 @@ Node * c7;
 /// The piles c1 through c7 are global static variables, that gets updated with the cards.
 void distributeForStart(Node * headOfDeck) {
 
-    //cptr**
-    //*ptr=c[0]=c1 = pointer to first pile top card
-    //*ptr2=c[1]=c2 = pointer to second pile top card
-    //...
-
-//    Node **c = (Node **) malloc(7*sizeof(Node*));
-    Node **c;
-
-//    //init the columns
-//    for(int i = 0; i < 7; i++) {
-//        Card tempCard;
-//        setCard(&tempCard,NULL,NULL,NULL);       //A placeholder card
-//
-//        c[i] = createNewNode();
-//        c[i]->prev = NULL;
-//        c[i]->next = NULL;
-//        c[i]->card = tempCard;
-//    }
-
     //c1
-    insertNew(c1, headOfDeck);
-    headOfDeck = deleteNode(headOfDeck, headOfDeck);
+    c1 = getTail(headOfDeck);
+    c1->prev = NULL;
+    getTail(headOfDeck)->prev->next = NULL;
 
+    //c2
+    c2 = getTail(headOfDeck);
+    c2->prev = NULL;
+    getTail(headOfDeck)->prev->next = NULL;
+    for (int i = 0; i < 5; ++i) {       //inserting the column's needed card amount except for the card already added
+        getTail(c2)->next = getTail(headOfDeck);
+
+        getFromTail(headOfDeck,5);
+        getTail(headOfDeck)->prev->prev->prev->prev->prev
+        getTail(headOfDeck)->prev->next = NULL;
+    }
+
+//    //c1
+//    c1 = headOfDeck;
+//    headOfDeck = headOfDeck->next;
+//    c1->prev = NULL;
+//    c1->next = NULL;
+//
 
     insertNew(c2, headOfDeck);     //deleting the first placeholder element
     headOfDeck = deleteNode(headOfDeck, headOfDeck);
@@ -129,11 +129,6 @@ void distributeForStart(Node * headOfDeck) {
         headOfDeck = deleteNode(headOfDeck, headOfDeck);
     }
 
-//    //c1
-//    Node * c1 = c[0];               //Naming for easier understanding
-//    insertNew(c[0],headOfDeck);
-//    c[0] = deleteNode(c[0],c[0]);
-//    headOfDeck = deleteNode(headOfDeck,headOfDeck);
 
     //c2
     Node * c2 = c[1];               //Naming for easier understanding

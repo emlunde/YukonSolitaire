@@ -141,3 +141,11 @@ void quickInsertCard(Node* listHead, char rank, char suit) {
     setCard(&node->card,rank,suit,0);
     insertNew(listHead, node);
 }
+
+Node * getFromTail(Node * head, int cnt) {
+    Node * tmp = getTail(head);
+    for (int i = 0; i < cnt; ++i) {
+        tmp = tmp->prev;
+    }
+    return tmp;
+}
