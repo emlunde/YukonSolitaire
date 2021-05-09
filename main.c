@@ -5,16 +5,29 @@
 
 
 //todo implement function for hiding cards in piles
+// void hideCards(Node ** head, int cardCntToHide)
+// example hideCards(c3,2)   //should change the cards visibility in the first (from head) two node's cards visibility to 0. default visibility should be 1;
 
 //todo implement function for revealing card in pile if remaining card is hidden after move of substack in pile
+// void revealCard(Node ** card)
+// example: revealCard(&getTail(c2)); //where c2 is the remaining cards after substack is moved from c2
 
 //todo implement function moving substacks between piles
+// should move the last (from tail) cards to another stack
+// change the next and prev attribs for the nodes.
+// example of use: moveSubStack(getNodeFromCardRankAndSuit(c1, 8, H), c2)       //should change the node holding card 8H to hold getTail(c2) as next,
+//                                                                              // and set the node which previously had the 8H card node as next to now have next = NULL
 
 //todo implement function for moving cards to suitStacks, with proper valid-move-checks
+// allow the tail from the stacks to be moved to the suitstacks if the move is according to the yukon game rules.
+// could maybe just use moveSubStack(getTail(c3), sH) to move 1 card from c3 to sH, suitstack hearts.
+//                                     Could return 1 if valid move is done, and 0 if move was invalid, and not completed.
 
 //todo implement function for shuffling deck
+// should change the cards not the nodes
 
 //todo implement function for creating deck (see createTestDeck function in Tests.h)
+// already done in Tests.h, so not important, but can be moved out to main, as to show it is more than just a test function.
 
 
 //_______________________________________________Game start_______________________________________________________________vvv
@@ -223,6 +236,8 @@ int main() {
     static Node * c5;
     static Node * c6;
     static Node * c7;
+
+
 
     //Stacks for the 4 suit piles
     static Node * sC;
