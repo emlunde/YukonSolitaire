@@ -138,11 +138,12 @@ struct node* deleteNode(Node* head, Node* node){
         head = head->next;
     }
 }
+
 int countElements(Node* head){
-    int count;
+    int count = 0;
     while(head!=NULL){
-    count++;
     head=head->next;
+    count++;
     }
     return count;
 }
@@ -165,8 +166,16 @@ void printNode(Node* node){
 
 Node * getFromTail(Node * head, int cnt) {
     Node * tmp = getTail(head);
-    for (int i = 0; i < cnt-1; ++i) {
+    for (int i = 0; i < cnt; ++i) {
         tmp = tmp->prev;
+    }
+    return tmp;
+}
+
+Node * getFromHead(Node * head, int cnt) {
+    Node * tmp = head;
+    for (int i = 0; i < cnt; ++i) {
+        tmp = tmp->next;
     }
     return tmp;
 }

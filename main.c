@@ -4,85 +4,20 @@
 #include "Tests.h"
 
 
-///// Function for splitting up the cardDeck to the 7 piles. Should match with the startposition.
-///// \param cardDeck: should be a full 52 set deck of cards. Can be shuffled or unshuffled.
-//struct Node* distributeDeckForStartPosition(Node * head) {
-//
-//
-//    Node *c1,*c2,*c3,*c4,*c5,*c6,*c7, **pptr;
-//
-//
-//    pptr = (Node **) malloc(7*sizeof(Node*));
-//    pptr = &c1;
-//
-//    Node **c;
-//
-//
-//    insertNew(c[0]) =
-//    head = deleteNode(head,head);
-//    c[0];
-//
-//    //init the columns
-//    for(int i = 0; i < 7; i++) {
-//        Card tempCard;
-//        setCard(&tempCard,NULL,NULL,NULL);       //A placeholder card
-//
-//        c[i] = createNewNode();
-//        c[i]->prev = NULL;
-//        c[i]->next = NULL;
-//        c[i]->card = tempCard;
-//    }
-//
-//    int cardCnt = 0;
-//    while(cardCnt < 52) {
-//
-//
-//        if (countElements(c[0]) < 1) {                          //for only inserting 1 valid card in stack c[0]
-//            insertNew(c[0],head);                               //card added. The added node's Next and Prev are overwritten on insert.
-//            if (c[0][0].card.rank == NULL) {                             //For checking if delete of placeholder needed (on first insert it is needed)
-//                c[0] = deleteNode(c[0],c[0]);               //for deleting placeholder first element and setting the head, c[0], as the next element
-//            }
-//            head = deleteNode(head,head);
-//            cardCnt++;
-//        }
-//        if (countElements(c[1]) < 6) {                          //for only inserting 6 valid card in stack c[1]
-//            insertNew(c[1],head);                               //card added. The added node's Next and Prev are overwritten on insert.
-//            if (c[1][0].card.rank == NULL) {                             //For checking if delete of placeholder needed (on first insert it is needed)
-//                c[1] = deleteNode(c[1],c[1]);               //for deleting placeholder first element and setting the head, c[1], as the next element
-//            }
-//            head = deleteNode(head,head);
-//            cardCnt++;
-//        }
-//        if (countElements(c[2]) < 7) {                          //for only inserting 7 valid card in stack c[2]
-//            insertNew(c[2],head);                               //card added. The added node's Next and Prev are overwritten on insert.
-//            if (c[2][0].card.rank == NULL) {                             //For checking if delete of placeholder needed (on first insert it is needed)
-//                c[2] = deleteNode(c[2],c[2]);               //for deleting placeholder first element and setting the head, c[2], as the next element
-//            }
-//            head = deleteNode(head,head);
-//            cardCnt++;
-//        }
-//
-//
-//
-//    }
-//
-//
-//    //todo: create start deck. create board from start deck.
-//
-//    //todo: get column for each linked list, and create array 'C' with the 7 linked lists
-//    //---OBS--- temp test below, see task above, and delete below when task is complete
-//    //card has visibility, suit, and rank
-//    Node * head = createNewNode();
-//    setCard(&head->card,'8','S',1);
-//
-//    quickInsertCard(head, '7', 'D');
-//    getNodeFromCardRankAndSuit(head,'7','D')->card.visibility = 1;
-//
-//    traverseList(head);
-//    //---OBS--- _______________________________________________________________________
-//    return c
-//}
+//todo implement function for hiding cards in piles
 
+//todo implement function for revealing card in pile if remaining card is hidden after move of substack in pile
+
+//todo implement function moving substacks between piles
+
+//todo implement function for moving cards to suitStacks, with proper valid-move-checks
+
+//todo implement function for shuffling deck
+
+//todo implement function for creating deck (see createTestDeck function in Tests.h)
+
+
+//_______________________________________________Game start_______________________________________________________________vvv
 
 /// Function for splitting up the cardDeck to the 7 piles. Should match with the startposition.
 /// \param headOfDeck: should be a full 52 set deck of cards. Can be shuffled or unshuffled.
@@ -96,61 +31,100 @@ void distributeForStart(Node * headOfDeck, Node ** c1, Node ** c2, Node ** c3 , 
     tmp->prev = NULL;
 
     //c2
-    *c2 = getFromTail(headOfDeck,6);
-    getFromTail(headOfDeck,6)->prev->next = NULL;
+    *c2 = getFromTail(headOfDeck,6-1);
+    getFromTail(headOfDeck,6-1)->prev->next = NULL;
     tmp = *c2;
     tmp->prev = NULL;
 
     //c3
-    *c3 = getFromTail(headOfDeck,7);
-    getFromTail(headOfDeck,7)->prev->next = NULL;
+    *c3 = getFromTail(headOfDeck,7-1);
+    getFromTail(headOfDeck,7-1)->prev->next = NULL;
     tmp = *c3;
     tmp->prev = NULL;
 
     //c4
-    *c4 = getFromTail(headOfDeck,8);
-    getFromTail(headOfDeck,8)->prev->next = NULL;
+    *c4 = getFromTail(headOfDeck,8-1);
+    getFromTail(headOfDeck,8-1)->prev->next = NULL;
     tmp = *c4;
     tmp->prev = NULL;
 
     //c5
-    *c5 = getFromTail(headOfDeck,9);
-    getFromTail(headOfDeck,9)->prev->next = NULL;
+    *c5 = getFromTail(headOfDeck,9-1);
+    getFromTail(headOfDeck,9-1)->prev->next = NULL;
     tmp = *c5;
     tmp->prev = NULL;
 
     //c6
-    *c6 = getFromTail(headOfDeck,10);
-    getFromTail(headOfDeck,10)->prev->next = NULL;
+    *c6 = getFromTail(headOfDeck,10-1);
+    getFromTail(headOfDeck,10-1)->prev->next = NULL;
     tmp = *c6;
     tmp->prev = NULL;
 
     //c7
-    *c7 = getFromTail(headOfDeck,11);
+    *c7 = getFromTail(headOfDeck,11-1);
     tmp = *c7;
     tmp->prev = NULL;
 }
 
+//_______________________________________________Game start_______________________________________________________________^^^
 
-void printStartPosition(){
+
+//___________________________________________________UI___________________________________________________________________vvv
+
+void printStartPosition(Node * c1,Node * c2,Node * c3,Node * c4,Node * c5,Node * c6,Node * c7){
 
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
 
-//    //get needed height for board to be printed
-//    int boardHeight = 0;
-//    for (int i = 0; i < 7; ++i) {
-//        if (countElements(C[i]) > boardHeight) {
-//            boardHeight = countElements(C[i]);
-//        }
-//    }
+    //get needed height for board to be printed
+    int boardHeight = countElements(c1);
 
-    //temporary simplification. delete after fix
-    int boardHeight=8;
+    if(countElements(c2) > boardHeight) {
+        boardHeight = countElements(c2);
+    }
+    if(countElements(c3) > boardHeight) {
+        boardHeight = countElements(c3);
+    }
+    if(countElements(c4) > boardHeight) {
+        boardHeight = countElements(c4);
+    }
+    if(countElements(c5) > boardHeight) {
+        boardHeight = countElements(c5);
+    }
+    if(countElements(c6) > boardHeight) {
+        boardHeight = countElements(c6);
+    }
+    if(countElements(c7) > boardHeight) {
+        boardHeight = countElements(c7);
+    }
+
 
     //print for each row
-    for (int i = 0; i < boardHeight; ++i) {
+    for (int i = 0; i < boardHeight; i++) {
+        printf("\t");
+        char chString[2];
+        if (countElements(c1) >= i + 1) {
+            chString[0] = getFromHead(c1, i)->card.rank;
+            chString[1] = getFromHead(c1, i)->card.suit;
+            printf("%2s", chString);
+        } else {
+            printf("  ");
+        }
+        chString[0] = '\0';
+        chString[1] = '\0';
+        printf("\t");
 
-        printf("\t%2s\t%2s\t%2s\t%2s\t%2s\t%2s\t%2s\t", "AC","2C", "6D", "8H", "TS", "AD", "[]");
+        if (countElements(c2) >= i + 1) {
+            chString[0] = getFromHead(c2, i)->card.rank;
+            chString[1] = getFromHead(c2, i)->card.suit;
+            printf("%c%c", chString[0],chString[1]);
+        } else {
+            printf("  ");
+        }
+        printf("\t");
+
+
+//        printf("test: %s", chString);
+        printf("%2s\t%2s\t%2s\t%2s\t%2s\t", "6D", "8H", "TS", "AD", "[]");
 
         if (i == 0) {
             printf("[]\tF1");
@@ -196,6 +170,9 @@ void updatePosition(){
 
 }
 
+
+//___________________________________________________UI___________________________________________________________________^^^
+
 int main() {
 
 //    printStartPosition();
@@ -223,9 +200,6 @@ int main() {
 //    printDeck(n);
 
 
-
-
-
 //    Card tempCard;
 //    setCard(&tempCard,'\0','\0',-1);
 //
@@ -237,11 +211,11 @@ int main() {
 //    }
 
 
-
 //    Node * head = createTestDeck();
 //    head = deleteNode(head,head);
 //    printDeck(head);
 
+    //Stacks for the 7 game piles
     static Node * c1;
     static Node * c2;
     static Node * c3;
@@ -250,17 +224,36 @@ int main() {
     static Node * c6;
     static Node * c7;
 
+    //Stacks for the 4 suit piles
+    static Node * sC;
+    static Node * sD;
+    static Node * sH;
+    static Node * sS;
+
+
     Node * testHead = createTestDeck();
     printDeck(testHead);
 
-    printf("\n\n");
+    printf("\nfrom tail: ");
+    printNode(getFromTail(testHead,2-1));
+
+    printf("from head: ");
+    printNode(getFromHead(testHead, 1));
+
+//    printf("\n\n");
 
     distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
 
-    printDeck(c2);
+//    printDeck(c2);
 
-//    popHead(head);
+    printStartPosition(c1,c2,c3,c4,c5,c6,c7);
 
-//    printDeck(head);
+
+    printf("\n\n");
+    printf("count: %d",countElements(testHead));
+
     return 0;
 }
+
+
+
