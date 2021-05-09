@@ -4,15 +4,6 @@
 #include "Tests.h"
 
 
-Node * c1;
-Node * c2;
-Node * c3;
-Node * c4;
-Node * c5;
-Node * c6;
-Node * c7;
-
-
 ///// Function for splitting up the cardDeck to the 7 piles. Should match with the startposition.
 ///// \param cardDeck: should be a full 52 set deck of cards. Can be shuffled or unshuffled.
 //struct Node* distributeDeckForStartPosition(Node * head) {
@@ -96,101 +87,48 @@ Node * c7;
 /// Function for splitting up the cardDeck to the 7 piles. Should match with the startposition.
 /// \param headOfDeck: should be a full 52 set deck of cards. Can be shuffled or unshuffled.
 /// The piles c1 through c7 are global static variables, that gets updated with the cards.
-void distributeForStart(Node * headOfDeck) {
+void distributeForStart(Node * headOfDeck, Node ** c1, Node ** c2, Node ** c3 , Node ** c4 , Node ** c5 , Node ** c6 , Node ** c7) {
 
     //c1
-    c1 = getTail(headOfDeck);
-    c1->prev = NULL;
+    *c1 = getTail(headOfDeck);
     getTail(headOfDeck)->prev->next = NULL;
+    Node * tmp = *c1;
+    tmp->prev = NULL;
 
     //c2
-    c2 = getTail(headOfDeck);
-    c2->prev = NULL;
-    getTail(headOfDeck)->prev->next = NULL;
-    for (int i = 0; i < 5; ++i) {       //inserting the column's needed card amount except for the card already added
-        getTail(c2)->next = getTail(headOfDeck);
-
-        getFromTail(headOfDeck,5);
-        getTail(headOfDeck)->prev->prev->prev->prev->prev
-        getTail(headOfDeck)->prev->next = NULL;
-    }
-
-//    //c1
-//    c1 = headOfDeck;
-//    headOfDeck = headOfDeck->next;
-//    c1->prev = NULL;
-//    c1->next = NULL;
-//
-
-    insertNew(c2, headOfDeck);     //deleting the first placeholder element
-    headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    for (int i = 0; i < 5; ++i) {       //inserting the column's needed card amount except for the card already added
-        insertNew(c2, headOfDeck);
-        headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    }
-
-
-    //c2
-    Node * c2 = c[1];               //Naming for easier understanding
-    insertNew(c2, headOfDeck);
-    c2 = deleteNode(c2,c2);             //deleting the first placeholder element
-    headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    for (int i = 0; i < 5; ++i) {       //inserting the column's needed card amount except for the card already added
-        insertNew(c2, headOfDeck);
-        headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    }
+    *c2 = getFromTail(headOfDeck,6);
+    getFromTail(headOfDeck,6)->prev->next = NULL;
+    tmp = *c2;
+    tmp->prev = NULL;
 
     //c3
-    Node * c3 = c[2];               //Naming for easier understanding
-    insertNew(c3, headOfDeck);
-    c3 = deleteNode(c3,c3);             //deleting the first placeholder element
-    headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    for (int i = 0; i < 6; ++i) {       //inserting the column's needed card amount except for the card already added
-        insertNew(c3, headOfDeck);
-        headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    }
+    *c3 = getFromTail(headOfDeck,7);
+    getFromTail(headOfDeck,7)->prev->next = NULL;
+    tmp = *c3;
+    tmp->prev = NULL;
 
     //c4
-    Node * c4 = c[3];               //Naming for easier understanding
-    insertNew(c4, headOfDeck);
-    c4 = deleteNode(c4,c4);             //deleting the first placeholder element
-    headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    for (int i = 0; i < 7; ++i) {       //inserting the column's needed card amount except for the card already added
-        insertNew(c4, headOfDeck);
-        headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    }
+    *c4 = getFromTail(headOfDeck,8);
+    getFromTail(headOfDeck,8)->prev->next = NULL;
+    tmp = *c4;
+    tmp->prev = NULL;
 
     //c5
-    Node * c5 = c[4];               //Naming for easier understanding
-    insertNew(c5, headOfDeck);
-    c5 = deleteNode(c5,c5);             //deleting the first placeholder element
-    headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    for (int i = 0; i < 8; ++i) {       //inserting the column's needed card amount except for the card already added
-        insertNew(c5, headOfDeck);
-        headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    }
+    *c5 = getFromTail(headOfDeck,9);
+    getFromTail(headOfDeck,9)->prev->next = NULL;
+    tmp = *c5;
+    tmp->prev = NULL;
 
     //c6
-    Node * c6 = c[5];               //Naming for easier understanding
-    insertNew(c6, headOfDeck);
-    c6 = deleteNode(c6,c6);             //deleting the first placeholder element
-    headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    for (int i = 0; i < 9; ++i) {       //inserting the column's needed card amount except for the card already added
-        insertNew(c6, headOfDeck);
-        headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    }
+    *c6 = getFromTail(headOfDeck,10);
+    getFromTail(headOfDeck,10)->prev->next = NULL;
+    tmp = *c6;
+    tmp->prev = NULL;
 
     //c7
-    Node * c7 = c[6];               //Naming for easier understanding
-    insertNew(c7, headOfDeck);
-    c7 = deleteNode(c7,c7);             //deleting the first placeholder element
-    headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    for (int i = 0; i < 10; ++i) {       //inserting the column's needed card amount except for the card already added
-        insertNew(c7, headOfDeck);
-        headOfDeck = deleteNode(headOfDeck, headOfDeck);
-    }
-
-    return c;
+    *c7 = getFromTail(headOfDeck,11);
+    tmp = *c7;
+    tmp->prev = NULL;
 }
 
 
@@ -304,13 +242,22 @@ int main() {
 //    head = deleteNode(head,head);
 //    printDeck(head);
 
+    static Node * c1;
+    static Node * c2;
+    static Node * c3;
+    static Node * c4;
+    static Node * c5;
+    static Node * c6;
+    static Node * c7;
+
     Node * testHead = createTestDeck();
     printDeck(testHead);
 
-    Node ** c = distributeForStart(testHead);
+    printf("\n\n");
 
-    printDeck(c[1]);
+    distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
 
+    printDeck(c2);
 
 //    popHead(head);
 

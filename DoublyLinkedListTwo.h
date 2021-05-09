@@ -69,6 +69,7 @@ struct node* getFromIndex(Node* head, int index){
         }
     } return printf("No such node with index: %d",index);
 }
+
 // Gets the tail - is tested with testGetTail() in Tests.h
 struct node* getTail(Node* head){
     Node* tail;
@@ -164,7 +165,7 @@ void printNode(Node* node){
 
 Node * getFromTail(Node * head, int cnt) {
     Node * tmp = getTail(head);
-    for (int i = 0; i < cnt; ++i) {
+    for (int i = 0; i < cnt-1; ++i) {
         tmp = tmp->prev;
     }
     return tmp;
