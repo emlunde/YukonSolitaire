@@ -105,9 +105,14 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
         //c1
         char chString[2];
         if (countElements(c1) >= i + 1) {
-            chString[0] = getFromHead(c1, i)->card.rank;
-            chString[1] = getFromHead(c1, i)->card.suit;
-            printf("%2s", chString);
+            if (getFromHead(c1,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c1, i)->card.rank;
+                chString[1] = getFromHead(c1, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("%c%c", chString[0],chString[1]);
         } else {
             printf("  ");
         }
@@ -117,8 +122,13 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
         //c2
         if (countElements(c2) >= i + 1) {
-            chString[0] = getFromHead(c2, i)->card.rank;
-            chString[1] = getFromHead(c2, i)->card.suit;
+            if (getFromHead(c2,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c2, i)->card.rank;
+                chString[1] = getFromHead(c2, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
             printf("%c%c", chString[0],chString[1]);
         } else {
             printf("  ");
@@ -127,8 +137,13 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
         //c3
         if (countElements(c3) >= i + 1) {
-            chString[0] = getFromHead(c3, i)->card.rank;
-            chString[1] = getFromHead(c3, i)->card.suit;
+            if (getFromHead(c3,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c3, i)->card.rank;
+                chString[1] = getFromHead(c3, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
             printf("%c%c", chString[0],chString[1]);
         } else {
             printf("  ");
@@ -137,8 +152,13 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
         //c4
         if (countElements(c4) >= i + 1) {
-            chString[0] = getFromHead(c4, i)->card.rank;
-            chString[1] = getFromHead(c4, i)->card.suit;
+            if (getFromHead(c4,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c4, i)->card.rank;
+                chString[1] = getFromHead(c4, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
             printf("%c%c", chString[0],chString[1]);
         } else {
             printf("  ");
@@ -147,8 +167,13 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
         //c5
         if (countElements(c5) >= i + 1) {
-            chString[0] = getFromHead(c5, i)->card.rank;
-            chString[1] = getFromHead(c5, i)->card.suit;
+            if (getFromHead(c5,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c5, i)->card.rank;
+                chString[1] = getFromHead(c5, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
             printf("%c%c", chString[0],chString[1]);
         } else {
             printf("  ");
@@ -157,8 +182,13 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
         //c6
         if (countElements(c6) >= i + 1) {
-            chString[0] = getFromHead(c6, i)->card.rank;
-            chString[1] = getFromHead(c6, i)->card.suit;
+            if (getFromHead(c6,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c6, i)->card.rank;
+                chString[1] = getFromHead(c6, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
             printf("%c%c", chString[0],chString[1]);
         } else {
             printf("  ");
@@ -167,8 +197,13 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
         //c7
         if (countElements(c7) >= i + 1) {
-            chString[0] = getFromHead(c7, i)->card.rank;
-            chString[1] = getFromHead(c7, i)->card.suit;
+            if (getFromHead(c7,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c7, i)->card.rank;
+                chString[1] = getFromHead(c7, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
             printf("%c%c", chString[0],chString[1]);
         } else {
             printf("  ");
@@ -176,13 +211,13 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
 
         if (i == 0) {
-            printf("\t[]\tF1");
+            printf("\t\t[]\tF1");
         } else if (i == 2) {
-            printf("\t[]\tF2");
+            printf("\t\t[]\tF2");
         } else if (i == 4) {
-            printf("\t[]\tF3");
+            printf("\t\t[]\tF3");
         } else if (i == 6) {
-            printf("\t[]\tF4");
+            printf("\t\t[]\tF4");
         }
         printf("\n");
     }
