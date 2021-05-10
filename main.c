@@ -427,12 +427,12 @@ void run(){
         scanf("%s", &command);
 
         //Deck for playing
-        Node * deckOfCardsHead = createTestDeck();
+        Node * deckOfCardsHead = createNewDeck();
 
         if(!strcmp(command,"SW")){
             printDeck(deckOfCardsHead);
         } else if(!strcmp(command,"SR")){
-
+            deckOfCardsHead = shuffleDeck(deckOfCardsHead);
         } else if (!strcmp(command, "QQ")){
             break;
         } else if(!strcmp(command, "P")){
