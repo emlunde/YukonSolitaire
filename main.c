@@ -4,9 +4,8 @@
 #include "Tests.h"
 
 
-//todo implement function for hiding cards in piles
-// void hideCards(Node ** head, int cardCntToHide)
-// example hideCards(c3,2)   //should change the cards visibility in the first (from head) two node's cards visibility to 0. default visibility should be 1;
+/// \param head             : The first card in the pile which is to get it's cards hidden.
+/// \param cardCntToHide    : The number of cards to be hidden, counting from head
 void hideCards(Node ** head, int cardCntToHide){
     for(int i = 0; i < cardCntToHide; i++){
         setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
@@ -84,6 +83,8 @@ void distributeForStart(Node * headOfDeck, Node ** c1, Node ** c2, Node ** c3 , 
     tmp->prev = NULL;
 }
 
+/// For setting up the hidden cards to match with the games start position.
+/// The dereference of the pointer to pointer is handled in the hideCards function.
 void setupGame(Node ** c2, Node ** c3, Node ** c4, Node ** c5, Node ** c6, Node ** c7){
 
     hideCards(c2,1);
@@ -91,7 +92,7 @@ void setupGame(Node ** c2, Node ** c3, Node ** c4, Node ** c5, Node ** c6, Node 
     hideCards(c4,3);
     hideCards(c5,4);
     hideCards(c6,5);
-    hideCards(c7,3);
+    hideCards(c7,6);
 
 }
 
