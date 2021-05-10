@@ -6,9 +6,13 @@
 #include <time.h>
 
 
-//todo implement function for hiding cards in piles
-// void hideCards(Node ** head, int cardCntToHide)
-// example hideCards(c3,2)   //should change the cards visibility in the first (from head) two node's cards visibility to 0. default visibility should be 1;
+/// \param head             : The first card in the pile which is to get it's cards hidden.
+/// \param cardCntToHide    : The number of cards to be hidden, counting from head
+void hideCards(Node ** head, int cardCntToHide){
+    for(int i = 0; i < cardCntToHide; i++){
+        setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
+    }
+}
 
 //todo implement function for revealing card in pile if remaining card is hidden after move of substack in pile
 // void revealCard(Node ** card)
@@ -81,6 +85,19 @@ void distributeForStart(Node * headOfDeck, Node ** c1, Node ** c2, Node ** c3 , 
     *c7 = getFromTail(headOfDeck,11-1);
     tmp = *c7;
     tmp->prev = NULL;
+}
+
+/// For setting up the hidden cards to match with the games start position.
+/// The dereference of the pointer to pointer is handled in the hideCards function.
+void setupGame(Node ** c2, Node ** c3, Node ** c4, Node ** c5, Node ** c6, Node ** c7){
+
+    hideCards(c2,1);
+    hideCards(c3,2);
+    hideCards(c4,3);
+    hideCards(c5,4);
+    hideCards(c6,5);
+    hideCards(c7,6);
+
 }
 
 //_______________________________________________Game start_______________________________________________________________^^^
@@ -278,8 +295,105 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
 //___________________________________________________UI___________________________________________________________________^^^
 
+void run(){
+
+    char * command;
+
+    while (1){
+
+        printf("Please enter a valid command: \n");
+        scanf("%s", &command);
+
+        Node * deckOfCardsHead = createTestDeck();
+
+        if(!strcmp(command,"SW")){
+            printDeck(deckOfCardsHead);
+        }
+
+        if(!strcmp(command,"SR")){
+
+        }
+
+        if(!strcmp(command, "P")){
+            //Stacks for the 7 game piles
+            static Node * c1;
+            static Node * c2;
+            static Node * c3;
+            static Node * c4;
+            static Node * c5;
+            static Node * c6;
+            static Node * c7;
+
+
+
+            //Stacks for the 4 suit piles
+            static Node * sC;
+            static Node * sD;
+            static Node * sH;
+            static Node * sS;
+
+
+
+            setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
+
+            while (1){
+
+
+
+                if (!strcmp(command, "Q")){
+                    break;
+                }
+
+            }
+        }
+
+        if (!strcmp(command, "QQ")){
+            break;
+        }
+    }
+}
+
 int main() {
 
+//    printCurrentBoard();
+//
+//    distributeDeckForStartPosition(createTestDeck());
+
+
+
+//    while(1) {
+//        printf("Please input command or move: ");
+//        char inputStr[100];
+//        gets(inputStr);
+//    //    char testStr[100] = "LD filenameTest3";
+//        //TODO: delete ... this was for testing Commands.h's functions
+//        char * result = cmdSelector(inputStr);
+//        printf("\nresult: %s\n",result);
+//
+//        if(strcmp(inputStr, "QQ") && strcmp(result,"OK")) {
+//            break;
+//        }
+//    }
+//    testSearchAndDelete();
+
+//    Node* n = createNewNode();
+//    printDeck(n);
+
+
+//    Card tempCard;
+//    setCard(&tempCard,'\0','\0',-1);
+//
+//    Node *n = createNewNode();
+//    n->card = tempCard;
+//
+//    if (n->card.rank == NULL && n->next == NULL) {
+//        printf("testetsetestst");
+//    }
+
+
+//    Node * head = createTestDeck();
+//    head = deleteNode(head,head);
+//    printDeck(head);
 
     //Stacks for the 7 game piles
     static Node * c1;
@@ -290,6 +404,8 @@ int main() {
     static Node * c6;
     static Node * c7;
 
+
+
     //Stacks for the 4 suit piles
     static Node * sC;
     static Node * sD;
@@ -297,9 +413,43 @@ int main() {
     static Node * sS;
 
 
-    Node* testHead2 = createTestDeck();
-    Node* shuffledDeck = shuffleDeck(testHead2);
-    traverseList(shuffledDeck);
+    Node * testHead = createTestDeck();
+    printDeck(testHead);
+
+    printf("\nfrom tail: ");
+    printNode(getFromTail(testHead,2-1));
+
+    printf("from head: ");
+    printNode(getFromHead(testHead, 1));
+
+//    printf("\n\n");
+
+
+
+
+
+        distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
+
+        setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
+
+//    printDeck(c2);
+
+//    sS = createTestDeck();      //test if suitStacks show revealed cards properly
+//    getTail(sS)->prev->next = NULL;
+//    printDeck(sS);
+
+        printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
+
+
+        printf("\n\n");
+        printf("count: %d",countElements(testHead));
+
+    /*printf("\nVisibility 1st card before: %i\n", getFromHead(c3,0)->card.visibility );
+    printf("Visibility 2nd card before: %i\n", getFromHead(c3,0)->next->card.visibility );
+    hideCards(c3, 2);
+    printf("Visibility 1st card after: %i\n", getFromHead(c3,0)->card.visibility);
+    printf("Visibility 2nd card after: %i\n", getFromHead(c3,0)->next->card.visibility);*/
+
     return 0;
 }
 
