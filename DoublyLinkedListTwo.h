@@ -43,6 +43,7 @@ void traverseList(Node* head){
     } */
 }
 void insertNew(Node* head, Node* new){
+
     // Find tail
     while(head->next!=NULL){
         head = head->next;

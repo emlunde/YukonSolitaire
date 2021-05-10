@@ -2,6 +2,8 @@
 #include "Commands.h"
 #include "DoublyLinkedListTwo.h"
 #include "Tests.h"
+#include <stdlib.h>
+#include <time.h>
 
 
 /// \param head             : The first card in the pile which is to get it's cards hidden.
@@ -29,6 +31,8 @@ void hideCards(Node ** head, int cardCntToHide){
 
 //todo implement function for shuffling deck
 // should change the cards not the nodes
+// Creates a new shuffled deck and frees the original deck
+Node* shuffleDeck(Node* head);
 
 //todo implement function for creating deck (see createTestDeck function in Tests.h)
 // already done in Tests.h, so not important, but can be moved out to main, as to show it is more than just a test function.
@@ -601,6 +605,55 @@ int main() {
     printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
 
     return 0;
+}
+
+Node* shuffleDeck(Node* head){
+    int deckSize = countElements(head);
+    int randomNumbers[deckSize];
+    int generatedNumbers = 0;
+    int hasOccured;
+
+    for(int i = 0; i<deckSize;i++){
+        randomNumbers[i]=-1;
+    }
+
+    while (generatedNumbers < deckSize) {
+        int random = rand() % deckSize;
+        hasOccured=0;
+        for (int i=0; i < deckSize; i++) {
+            if (random == randomNumbers[i]) {
+                hasOccured = 1;
+                continue;
+            }
+        }
+        if (hasOccured == 0) {
+            randomNumbers[generatedNumbers] = random;
+            generatedNumbers++;
+            continue;
+        }
+    }
+    /*
+     * Takes a random int from randomNumbers[i] and adds the corresponding Node to newDeck.
+     */
+    Node* newDeck = createNewNode();
+    Node* temp;
+    for (int i = 0; i < deckSize; ++i) {
+     if(i==0){
+         setCard(&newDeck->card, getFromHead(head,randomNumbers[i])->card.rank,getFromHead(head,randomNumbers[i])->card.suit,getFromHead(head,randomNumbers[i])->card.visibility);
+     }
+        if(i>0 && i<=deckSize){
+        temp = createNewNode();
+        setCard(&temp->card, getFromHead(head,randomNumbers[i])->card.rank,getFromHead(head,randomNumbers[i])->card.suit,getFromHead(head,randomNumbers[i])->card.visibility);
+        insertNew(newDeck,temp);
+        }
+    }
+    // free() original unshuffled list
+    while(head!=NULL){
+        temp = head;
+        head = head->next;
+        deleteNode(head,temp);
+    }
+    return newDeck;
 }
 
 
