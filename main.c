@@ -7,6 +7,9 @@
 //todo implement function for hiding cards in piles
 // void hideCards(Node ** head, int cardCntToHide)
 // example hideCards(c3,2)   //should change the cards visibility in the first (from head) two node's cards visibility to 0. default visibility should be 1;
+void hideCards(Node * head, int cardCntToHide){
+    setCard(&getFromHead(head, cardCntToHide)->next->card, getFromHead(head, cardCntToHide)->next->card.rank, getFromHead(head, cardCntToHide)->next->card.suit, 0);
+}
 
 //todo implement function for revealing card in pile if remaining card is hidden after move of substack in pile
 // void revealCard(Node ** card)
@@ -267,6 +270,9 @@ int main() {
     printf("\n\n");
     printf("count: %d",countElements(testHead));
 
+    printf("\nVisibility before %i\n", getFromHead(c3,2)->next->card.visibility );
+    hideCards(c3, 2);
+    printf("Visibility after %i\n", getFromHead(c3,2)->next->card.visibility);
     return 0;
 }
 
