@@ -10,7 +10,7 @@ struct node* createTestDeck(){
     Node* head = createNewNode();
     Card temp_card;
     Node* temp;
-    temp_card.visibility=0;
+    temp_card.visibility=1;
     // A setup of for-loops creates the 13 cards from each of the 4 suits
     for(int index=1; index<=4; index++){
         if(index==1) temp_card.suit = 'C';
