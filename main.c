@@ -2,6 +2,8 @@
 #include "Commands.h"
 #include "DoublyLinkedListTwo.h"
 #include "Tests.h"
+#include <stdlib.h>
+#include <time.h>
 
 
 //todo implement function for hiding cards in piles
@@ -25,6 +27,8 @@
 
 //todo implement function for shuffling deck
 // should change the cards not the nodes
+// Creates a new shuffled deck and frees the original deck
+Node* shuffleDeck(Node* head);
 
 //todo implement function for creating deck (see createTestDeck function in Tests.h)
 // already done in Tests.h, so not important, but can be moved out to main, as to show it is more than just a test function.
@@ -270,51 +274,12 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
     printf("INPUT > \n");
 
 }
-
+int* randomUniqueNumber(int n,int** array);
 
 //___________________________________________________UI___________________________________________________________________^^^
 
 int main() {
 
-//    printCurrentBoard();
-//
-//    distributeDeckForStartPosition(createTestDeck());
-
-
-
-//    while(1) {
-//        printf("Please input command or move: ");
-//        char inputStr[100];
-//        gets(inputStr);
-//    //    char testStr[100] = "LD filenameTest3";
-//        //TODO: delete ... this was for testing Commands.h's functions
-//        char * result = cmdSelector(inputStr);
-//        printf("\nresult: %s\n",result);
-//
-//        if(strcmp(inputStr, "QQ") && strcmp(result,"OK")) {
-//            break;
-//        }
-//    }
-//    testSearchAndDelete();
-
-//    Node* n = createNewNode();
-//    printDeck(n);
-
-
-//    Card tempCard;
-//    setCard(&tempCard,'\0','\0',-1);
-//
-//    Node *n = createNewNode();
-//    n->card = tempCard;
-//
-//    if (n->card.rank == NULL && n->next == NULL) {
-//        printf("testetsetestst");
-//    }
-
-
-//    Node * head = createTestDeck();
-//    head = deleteNode(head,head);
-//    printDeck(head);
 
     //Stacks for the 7 game piles
     static Node * c1;
@@ -325,8 +290,6 @@ int main() {
     static Node * c6;
     static Node * c7;
 
-
-
     //Stacks for the 4 suit piles
     static Node * sC;
     static Node * sD;
@@ -334,33 +297,51 @@ int main() {
     static Node * sS;
 
 
-    Node * testHead = createTestDeck();
-    printDeck(testHead);
-
-    printf("\nfrom tail: ");
-    printNode(getFromTail(testHead,2-1));
-
-    printf("from head: ");
-    printNode(getFromHead(testHead, 1));
-
-//    printf("\n\n");
-
-    distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
-
-//    printDeck(c2);
-
-//    sS = createTestDeck();      //test if suitStacks show revealed cards properly
-//    getTail(sS)->prev->next = NULL;
-//    printDeck(sS);
-
-    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
-
-
+    Node* testHead2 = createTestDeck();
+    traverseList(testHead2);
     printf("\n\n");
-    printf("count: %d",countElements(testHead));
-
+    Node* shuffledDeck = shuffleDeck(testHead2);
+    //traverseList(shuffledDeck);
     return 0;
 }
 
+Node* shuffleDeck(Node* head){
+    int deckSize = countElements(head);
+    int* randomNumbers;
+    randomNumbers = randomUniqueNumber(deckSize,&randomNumbers);
+    Node* newDeck = NULL;
+    printf("Random:\n");
+        for(int i=0;i<deckSize;i++){
+        printf("%d\t",(int)*randomNumbers+i);
+
+    } return newDeck;
+}
+
+int* randomUniqueNumber(int n,int** array) {
+    int randomNumbers[n];
+    *array = randomNumbers;
+    int generatedNumbers = 0;
+    int hasOccured;
+
+    for(int i = 0; i<n;i++){
+        randomNumbers[i]=-1;
+    }
+    //printf("Random:\n");
+    while (generatedNumbers < n) {
+        int random = rand() % n;
+        hasOccured=0;
+        for (int i=0; i < n; i++) {
+            if (random == randomNumbers[i]) {
+                hasOccured = 1;
+                continue;
+            }
+        }
+        if (hasOccured == 0) {
+            randomNumbers[generatedNumbers] = random;
+            generatedNumbers++;
+            continue;
+        }
+    } return randomNumbers;
+}
 
 
