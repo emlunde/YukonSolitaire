@@ -89,7 +89,7 @@ void distributeForStart(Node * headOfDeck, Node ** c1, Node ** c2, Node ** c3 , 
 
 //___________________________________________________UI___________________________________________________________________vvv
 
-void printStartPosition(Node * c1,Node * c2,Node * c3,Node * c4,Node * c5,Node * c6,Node * c7){
+void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, Node * c6, Node * c7, Node * sC, Node * sD, Node * sH, Node * sS){
 
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
 
@@ -119,11 +119,19 @@ void printStartPosition(Node * c1,Node * c2,Node * c3,Node * c4,Node * c5,Node *
     //print for each row
     for (int i = 0; i < boardHeight; i++) {
         printf("\t");
+
         char chString[2];
+
+        //c1
         if (countElements(c1) >= i + 1) {
-            chString[0] = getFromHead(c1, i)->card.rank;
-            chString[1] = getFromHead(c1, i)->card.suit;
-            printf("%2s", chString);
+            if (getFromHead(c1,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c1, i)->card.rank;
+                chString[1] = getFromHead(c1, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("%c%c", chString[0],chString[1]);
         } else {
             printf("  ");
         }
@@ -131,57 +139,137 @@ void printStartPosition(Node * c1,Node * c2,Node * c3,Node * c4,Node * c5,Node *
         chString[1] = '\0';
         printf("\t");
 
+        //c2
         if (countElements(c2) >= i + 1) {
-            chString[0] = getFromHead(c2, i)->card.rank;
-            chString[1] = getFromHead(c2, i)->card.suit;
+            if (getFromHead(c2,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c2, i)->card.rank;
+                chString[1] = getFromHead(c2, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
             printf("%c%c", chString[0],chString[1]);
         } else {
             printf("  ");
         }
         printf("\t");
 
+        //c3
+        if (countElements(c3) >= i + 1) {
+            if (getFromHead(c3,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c3, i)->card.rank;
+                chString[1] = getFromHead(c3, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("%c%c", chString[0],chString[1]);
+        } else {
+            printf("  ");
+        }
+        printf("\t");
 
-//        printf("test: %s", chString);
-        printf("%2s\t%2s\t%2s\t%2s\t%2s\t", "6D", "8H", "TS", "AD", "[]");
+        //c4
+        if (countElements(c4) >= i + 1) {
+            if (getFromHead(c4,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c4, i)->card.rank;
+                chString[1] = getFromHead(c4, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("%c%c", chString[0],chString[1]);
+        } else {
+            printf("  ");
+        }
+        printf("\t");
 
+        //c5
+        if (countElements(c5) >= i + 1) {
+            if (getFromHead(c5,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c5, i)->card.rank;
+                chString[1] = getFromHead(c5, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("%c%c", chString[0],chString[1]);
+        } else {
+            printf("  ");
+        }
+        printf("\t");
+
+        //c6
+        if (countElements(c6) >= i + 1) {
+            if (getFromHead(c6,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c6, i)->card.rank;
+                chString[1] = getFromHead(c6, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("%c%c", chString[0],chString[1]);
+        } else {
+            printf("  ");
+        }
+        printf("\t");
+
+        //c7
+        if (countElements(c7) >= i + 1) {
+            if (getFromHead(c7,i)->card.visibility == 1) {          //checks if card is visible (1 is visible, 0 is hidden)
+                chString[0] = getFromHead(c7, i)->card.rank;
+                chString[1] = getFromHead(c7, i)->card.suit;
+            } else {                                                //if card is hidden should show '[]' in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("%c%c", chString[0],chString[1]);
+        } else {
+            printf("  ");
+        }
+
+        //suitStacks
         if (i == 0) {
-            printf("[]\tF1");
+            if (countElements(sC) > 0) {
+                chString[0] = getTail(sC)->card.rank;
+                chString[1] = getTail(sC)->card.suit;
+            } else {                                                //if no cards in suitStack '[]' is shown in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("\t\t%c%c\tF1", chString[0],chString[1]);
         } else if (i == 2) {
-            printf("[]\tF2");
+            if (countElements(sD) > 0) {
+                chString[0] = getTail(sD)->card.rank;
+                chString[1] = getTail(sD)->card.suit;
+            } else {                                                //if no cards in suitStack '[]' is shown in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("\t\t%c%c\tF2", chString[0],chString[1]);
         } else if (i == 4) {
-            printf("[]\tF3");
+            if (countElements(sH) > 0) {
+                chString[0] = getTail(sH)->card.rank;
+                chString[1] = getTail(sH)->card.suit;
+            } else {                                                //if no cards in suitStack '[]' is shown in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("\t\t%c%c\tF3", chString[0],chString[1]);
         } else if (i == 6) {
-            printf("[]\tF4");
+            if (countElements(sS) > 0) {
+                chString[0] = getTail(sS)->card.rank;
+                chString[1] = getTail(sS)->card.suit;
+            } else {                                                //if no cards in suitStack '[]' is shown in TUI
+                chString[0] = '[';
+                chString[1] = ']';
+            }
+            printf("\t\t%c%c\tF4", chString[0],chString[1]);
         }
         printf("\n");
     }
 
 
-//    printf("\t\t\t\t\t\t\t\t[]\tF1\n");
-//    printf("\t\t\t\t\t\t\t\t\n");
-//    printf("\t\t\t\t\t\t\t\t[]\tF2\n");
-//    printf("\t\t\t\t\t\t\t\t\n");
-//    printf("\t\t\t\t\t\t\t\t[]\tF3\n");
-//    printf("\t\t\t\t\t\t\t\t\n");
-//    printf("\t\t\t\t\t\t\t\t[]\tF4\n");
-//    printf("\t\t\t\t\t\t\t\t\n");
-    printf("LAST command: \n");
-    printf("Message: \n");
-    printf("INPUT > \n");
-
-}
-
-void updatePosition(){
-
-    printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n");
-    printf("\t\t\t\t\t\t\t\t[]\tF1\n");
-    printf("\t\t\t\t\t\t\t\t\n");
-    printf("\t\t\t\t\t\t\t\t[]\tF2\n");
-    printf("\t\t\t\t\t\t\t\t\n");
-    printf("\t\t\t\t\t\t\t\t[]\tF3\n");
-    printf("\t\t\t\t\t\t\t\t\n");
-    printf("\t\t\t\t\t\t\t\t[]\tF4\n");
-    printf("\t\t\t\t\t\t\t\t\n");
     printf("LAST command: \n");
     printf("Message: \n");
     printf("INPUT > \n");
@@ -193,7 +281,7 @@ void updatePosition(){
 
 int main() {
 
-//    printStartPosition();
+//    printCurrentBoard();
 //
 //    distributeDeckForStartPosition(createTestDeck());
 
@@ -266,7 +354,11 @@ int main() {
 
 //    printDeck(c2);
 
-    printStartPosition(c1,c2,c3,c4,c5,c6,c7);
+//    sS = createTestDeck();      //test if suitStacks show revealed cards properly
+//    getTail(sS)->prev->next = NULL;
+//    printDeck(sS);
+
+    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
 
 
     printf("\n\n");
