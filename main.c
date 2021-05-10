@@ -294,23 +294,36 @@ int getRankIndex(char rank) {
     return -1;              //error rank not found
 }
 
-/// \param subHead      : The first card in the stack, that is to be moved
+/// \param subHead      : The address of the first card in the subStack, that is to be moved
 /// \param moveToStack  : The head of the stack that the subStack is to be moved to
 /// \return             : Returns 0 if success. Less than 0 if failure.
-int moveSubStack(Node * subHead, Node * moveToStack) {
-    if (getCardColor(subHead->card) != getCardColor(getTail(moveToStack)->card)) {          //checks if colors are different
-        //todo make so movement to empty stack works
-        if (getRankIndex(subHead->card.rank) == getRankIndex(getTail(moveToStack)->card.rank)-1)  {     //checks if the first card in moved stack is one rank lower than the card moved to.
-            //if the card left above the moved subStack is hidden, reveal it.
-            if (subHead->prev->card.visibility == 0) {
-                subHead->prev->card.visibility = 1;
-            }
-            subHead->prev->next = NULL;             //make the card left after moving subStack new tail
+int moveSubStack(Node ** subHead, Node * moveToStack) {
+    int hasEmptyStack = 0;
+    Node * placeHolder = *subHead;
 
-            subHead->prev = getTail(moveToStack);   //make the movedToStack become the previous cards for the moved subStack
-            getTail(moveToStack)->next = subHead;   //make the movedToStacks old tail point to to head in the now moved subStack
+    if (getCardColor(placeHolder->card) != getCardColor(getTail(moveToStack)->card)) {          //checks if colors are different
+        //todo make so movement to empty stack works
+        if (getRankIndex(placeHolder->card.rank) == getRankIndex(getTail(moveToStack)->card.rank) - 1)  {     //checks if the first card in moved stack is one rank lower than the card moved to.
+            //if the card left above the moved subStack is hidden, reveal it.
+            if (placeHolder->prev != NULL) {
+                if (placeHolder->prev->card.visibility == 0) {
+                    placeHolder->prev->card.visibility = 1;
+                }
+                placeHolder->prev->next = NULL;             //make the card left after moving subStack new tail
+            } else {
+                //Todo represent empty pile
+                hasEmptyStack = 1;
+            }
+
+            placeHolder->prev = getTail(moveToStack);   //make the movedToStack become the previous cards for the moved subStack
+            getTail(moveToStack)->next = placeHolder;   //make the movedToStacks old tail point to to head in the now moved subStack
+
+            if (hasEmptyStack == 1) {
+                *subHead = NULL;
+            }
 
             return 0;
+
         }  else {
             return -2;  //error card ranks are not compatible for movement
         }
@@ -320,9 +333,14 @@ int moveSubStack(Node * subHead, Node * moveToStack) {
     return NULL;
 }
 
+//todo make moveCardFromSuitStack
+
+
 //____________________________________________Game card movement__________________________________________________________^^^
 
+
 int main() {
+
 
 //    printCurrentBoard();
 //
@@ -364,7 +382,7 @@ int main() {
 //    head = deleteNode(head,head);
 //    printDeck(head);
 
-    //Stacks for the 7 game piles
+    //Stacks of headNodes for the 7 game piles
     static Node * c1;
     static Node * c2;
     static Node * c3;
@@ -372,7 +390,6 @@ int main() {
     static Node * c5;
     static Node * c6;
     static Node * c7;
-
 
 
     //Stacks for the 4 suit piles
@@ -403,7 +420,10 @@ int main() {
 
 
     printNode(getFromTail(c7,4));
-    moveSubStack(getFromTail(c7,4),c6);     //test for moving subStack 7C from c7 to 8D in c6
+    Node * subS = getFromTail(c7,4);
+    moveSubStack(&subS,c6);     //test for moving subStack 7C from c7 to 8D in c6
+
+    moveSubStack(&c4,c3);
 
     printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
 
