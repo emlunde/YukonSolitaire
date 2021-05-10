@@ -274,7 +274,7 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
     printf("INPUT > \n");
 
 }
-int* randomUniqueNumber(int n,int** array);
+
 
 //___________________________________________________UI___________________________________________________________________^^^
 
@@ -298,39 +298,25 @@ int main() {
 
 
     Node* testHead2 = createTestDeck();
-    traverseList(testHead2);
-    printf("\n\n");
     Node* shuffledDeck = shuffleDeck(testHead2);
-    //traverseList(shuffledDeck);
+    traverseList(shuffledDeck);
     return 0;
 }
 
 Node* shuffleDeck(Node* head){
     int deckSize = countElements(head);
-    int* randomNumbers;
-    randomNumbers = randomUniqueNumber(deckSize,&randomNumbers);
-    Node* newDeck = NULL;
-    printf("Random:\n");
-        for(int i=0;i<deckSize;i++){
-        printf("%d\t",(int)*randomNumbers+i);
-
-    } return newDeck;
-}
-
-int* randomUniqueNumber(int n,int** array) {
-    int randomNumbers[n];
-    *array = randomNumbers;
+    int randomNumbers[deckSize];
     int generatedNumbers = 0;
     int hasOccured;
 
-    for(int i = 0; i<n;i++){
+    for(int i = 0; i<deckSize;i++){
         randomNumbers[i]=-1;
     }
-    //printf("Random:\n");
-    while (generatedNumbers < n) {
-        int random = rand() % n;
+
+    while (generatedNumbers < deckSize) {
+        int random = rand() % deckSize;
         hasOccured=0;
-        for (int i=0; i < n; i++) {
+        for (int i=0; i < deckSize; i++) {
             if (random == randomNumbers[i]) {
                 hasOccured = 1;
                 continue;
@@ -341,7 +327,27 @@ int* randomUniqueNumber(int n,int** array) {
             generatedNumbers++;
             continue;
         }
-    } return randomNumbers;
+    }
+    Node* newDeck = createNewNode();
+    Node* temp;
+    for (int i = 0; i < deckSize; ++i) {
+     if(i==0){
+         setCard(&newDeck->card, getFromHead(head,randomNumbers[i])->card.rank,getFromHead(head,randomNumbers[i])->card.suit,getFromHead(head,randomNumbers[i])->card.visibility);
+     }
+        if(i>0 && i<=deckSize){
+        temp = createNewNode();
+        setCard(&temp->card, getFromHead(head,randomNumbers[i])->card.rank,getFromHead(head,randomNumbers[i])->card.suit,getFromHead(head,randomNumbers[i])->card.visibility);
+        insertNew(newDeck,temp);
+        }
+    }
+    // free() original unshuffled list
+    while(head!=NULL){
+        temp = head;
+        head = head->next;
+        deleteNode(head,temp);
+    }
+    return newDeck;
 }
+
 
 

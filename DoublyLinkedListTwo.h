@@ -53,6 +53,7 @@ void insertNew(Node* head, Node* new){
         head->next = new;
         new->prev = head;
         new->next = NULL;
+        new->index = head->index+1;
     }
 }
 
