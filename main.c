@@ -12,7 +12,10 @@ void hideCards(Node ** head, int cardCntToHide){
         setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
     }
 }
+// Creates a fresh 52-card new deck in ascending order (non-shuffled)
 struct node* createNewDeck();
+// Creates a new shuffled deck and frees the original deck
+Node* shuffleDeck(Node* head);
 //todo implement function for revealing card in pile if remaining card is hidden after move of substack in pile
 // void revealCard(Node ** card)
 // example: revealCard(&getTail(c2)); //where c2 is the remaining cards after substack is moved from c2
@@ -30,8 +33,7 @@ struct node* createNewDeck();
 
 //todo implement function for shuffling deck
 // should change the cards not the nodes
-// Creates a new shuffled deck and frees the original deck
-Node* shuffleDeck(Node* head);
+
 
 //todo implement function for creating deck (see createTestDeck function in Tests.h)
 // already done in Tests.h, so not important, but can be moved out to main, as to show it is more than just a test function.
