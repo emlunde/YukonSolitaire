@@ -299,6 +299,16 @@ void run(){
         printf("Please enter a valid command: \n");
         scanf("%s", &command);
 
+        Node * deckOfCardsHead = createTestDeck();
+
+        if(!strcmp(command,"SW")){
+            printDeck(deckOfCardsHead);
+        }
+
+        if(!strcmp(command,"SR")){
+
+        }
+
         if(!strcmp(command, "P")){
             //Stacks for the 7 game piles
             static Node * c1;
@@ -318,7 +328,6 @@ void run(){
             static Node * sS;
 
 
-            Node * testHead = createTestDeck();
 
             setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
 
