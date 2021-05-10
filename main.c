@@ -7,15 +7,12 @@
 
 /// \param head             : The first card in the pile which is to get it's cards hidden.
 /// \param cardCntToHide    : The number of cards to be hidden, counting from head
-void hideCards(Node ** head, int cardCntToHide){
-    for(int i = 0; i < cardCntToHide; i++){
-        setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
-    }
-}
-// Creates a fresh 52-card new deck in ascending order (non-shuffled)
+void hideCards(Node ** head, int cardCntToHide);
+/// Creates a fresh 52-card new deck in ascending order (non-shuffled)
 struct node* createNewDeck();
-// Creates a new shuffled deck and frees the original deck
+/// Creates a new shuffled deck and frees the original deck
 Node* shuffleDeck(Node* head);
+void run();
 //todo implement function for revealing card in pile if remaining card is hidden after move of substack in pile
 // void revealCard(Node ** card)
 // example: revealCard(&getTail(c2)); //where c2 is the remaining cards after substack is moved from c2
@@ -31,12 +28,6 @@ Node* shuffleDeck(Node* head);
 // could maybe just use moveSubStack(getTail(c3), sH) to move 1 card from c3 to sH, suitstack hearts.
 //                                     Could return 1 if valid move is done, and 0 if move was invalid, and not completed.
 
-//todo implement function for shuffling deck
-// should change the cards not the nodes
-
-
-//todo implement function for creating deck (see createTestDeck function in Tests.h)
-// already done in Tests.h, so not important, but can be moved out to main, as to show it is more than just a test function.
 
 
 //_______________________________________________Game start_______________________________________________________________vvv
@@ -416,101 +407,7 @@ int moveSubStack(Node ** subHead, Node ** moveToStack) {
 //____________________________________________Game card movement__________________________________________________________^^^
 
 
-
-void run(){
-
-    char * command;
-
-    while (1){
-
-        printf("Please enter a valid command: \n");
-        scanf("%s", &command);
-
-        //Deck for playing
-        Node * deckOfCardsHead = createNewDeck();
-
-        if(!strcmp(command,"SW")){
-            printDeck(deckOfCardsHead);
-        } else if(!strcmp(command,"SR")){
-            deckOfCardsHead = shuffleDeck(deckOfCardsHead);
-        } else if (!strcmp(command, "QQ")){
-            break;
-        } else if(!strcmp(command, "P")){
-            //Stacks for the 7 game piles
-            static Node * c1;
-            static Node * c2;
-            static Node * c3;
-            static Node * c4;
-            static Node * c5;
-            static Node * c6;
-            static Node * c7;
-
-            //Stacks for the 4 suit piles
-            static Node * sC;
-            static Node * sD;
-            static Node * sH;
-            static Node * sS;
-
-
-            setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
-
-            //play loop
-            while (1){
-
-
-
-                if (!strcmp(command, "Q")){
-                    break;
-                }
-            }
-        }
-    }
-}
-
 int main() {
-
-
-//    printCurrentBoard();
-//
-//    distributeDeckForStartPosition(createTestDeck());
-
-
-
-//    while(1) {
-//        printf("Please input command or move: ");
-//        char inputStr[100];
-//        gets(inputStr);
-//    //    char testStr[100] = "LD filenameTest3";
-//        //TODO: delete ... this was for testing Commands.h's functions
-//        char * result = cmdSelector(inputStr);
-//        printf("\nresult: %s\n",result);
-//
-//        if(strcmp(inputStr, "QQ") && strcmp(result,"OK")) {
-//            break;
-//        }
-//    }
-//    testSearchAndDelete();
-
-//    Node* n = createNewNode();
-//    printDeck(n);
-
-
-//    Card tempCard;
-//    setCard(&tempCard,'\0','\0',-1);
-//
-//    Node *n = createNewNode();
-//    n->card = tempCard;
-//
-//    if (n->card.rank == NULL && n->next == NULL) {
-//        printf("testetsetestst");
-//    }
-
-
-//    Node * head = createTestDeck();
-//    head = deleteNode(head,head);
-//    printDeck(head);
-
-    //Stacks for the 7 game piles
     static Node * c1;
     static Node * c2;
     static Node * c3;
@@ -519,84 +416,17 @@ int main() {
     static Node * c6;
     static Node * c7;
 
-
     //Stacks for the 4 suit piles
     static Node * sC;
     static Node * sD;
     static Node * sH;
     static Node * sS;
 
-
-    Node * testHead = createTestDeck();
-    printDeck(testHead);
-
-    printf("\nfrom tail: ");
-    printNode(getFromTail(testHead,2-1));
-
-    printf("from head: ");
-    printNode(getFromHead(testHead, 1));
-
-//    printf("\n\n");
-
-    distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
-
-    setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
-
-//    printDeck(c2);
-
-//    sS = createTestDeck();      //test if suitStacks show revealed cards properly
-//    getTail(sS)->prev->next = NULL;
-//    printDeck(sS);
-
-
-    printNode(getFromTail(c7,4));
-    Node * subS = getFromTail(c7,4);
-    moveSubStack(&subS,&c6);     //test for moving subStack 7C from c7 to 8D in c6
-
-    moveSubStack(&c4,&c3);
-
-    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
-
-    printf("c7 tail:                    ");
-    printNode(getTail(c7));
-    printf("c6 tail:                    ");
-    printNode(getTail(c6));
-    printf("c6 moved card:              ");
-    printNode(getFromTail(c6,4));
-    printf("c6 card before moved card:  ");
-    printNode(getFromTail(c6,5));
-
-    printNode(getTail(c2));
-
-
-    moveSubStack(&c1,&c4);
-
-    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
-
-
-    moveSubStack(&c2,&c1);
-
-    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
-
-    /*printf("\nVisibility 1st card before: %i\n", getFromHead(c3,0)->card.visibility );
-    printf("Visibility 2nd card before: %i\n", getFromHead(c3,0)->next->card.visibility );
-    hideCards(c3, 2);
-    printf("Visibility 1st card after: %i\n", getFromHead(c3,0)->card.visibility);
-    printf("Visibility 2nd card after: %i\n", getFromHead(c3,0)->next->card.visibility);*/
-
-
-    //for testing moving to suitStacks.
-    Node *nodeAceHearts = createNewNode();
-    Card cardAceHearts;
-    setCard(&cardAceHearts,'A','H',1);
-    nodeAceHearts->card = cardAceHearts;
-    c1 = nodeAceHearts;
-
-    Node * tmp = getTail(c2);
-    moveToSuitStack(&c1,&sS);
-
-    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
-
+    Node* test = createNewDeck();
+    traverseList(test);
+    test = shuffleDeck(test);
+    traverseList(test);
+    //setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
     return 0;
 }
 
@@ -769,5 +599,57 @@ struct node* createNewDeck(){
         }
     } return head;
 }
+void hideCards(Node ** head, int cardCntToHide){
+for(int i = 0; i < cardCntToHide; i++){
+setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
+}
+}
+void run(){
+
+    char * command;
+
+    while (1){
+
+        printf("Please enter a valid command: \n");
+        scanf("%s", &command);
+
+        //Deck for playing
+        Node * deckOfCardsHead = createNewDeck();
+
+        if(!strcmp(command,"SW")){
+            printDeck(deckOfCardsHead);
+        } else if(!strcmp(command,"SR")){
+            deckOfCardsHead = shuffleDeck(deckOfCardsHead);
+        } else if (!strcmp(command, "QQ")){
+            break;
+        } else if(!strcmp(command, "P")){
+            //Stacks for the 7 game piles
+            static Node * c1;
+            static Node * c2;
+            static Node * c3;
+            static Node * c4;
+            static Node * c5;
+            static Node * c6;
+            static Node * c7;
+
+            //Stacks for the 4 suit piles
+            static Node * sC;
+            static Node * sD;
+            static Node * sH;
+            static Node * sS;
 
 
+            setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
+
+            //play loop
+            while (1){
+
+
+
+                if (!strcmp(command, "Q")){
+                    break;
+                }
+            }
+        }
+    }
+}
