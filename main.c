@@ -328,6 +328,9 @@ Node* shuffleDeck(Node* head){
             continue;
         }
     }
+    /*
+     * Takes a random int from randomNumbers[i] and adds the corresponding Node to newDeck.
+     */
     Node* newDeck = createNewNode();
     Node* temp;
     for (int i = 0; i < deckSize; ++i) {
