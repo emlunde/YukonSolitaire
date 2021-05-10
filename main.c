@@ -291,6 +291,127 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
 //___________________________________________________UI___________________________________________________________________^^^
 
+//____________________________________________Game card movement__________________________________________________________vvv
+
+int getCardColor(Card card) {
+    if (card.suit == 'H' || card.suit == 'D') {
+        return 'r';                                       //char ascii value 114 for 'r'
+    } else if (card.suit == 'C' || card.suit == 'S') {
+        return 'b';                                       //char ascii value 98 for 'b'
+    } else {
+        return -1;
+    }
+}
+int getRankIndex(char rank) {
+    char ranks[] = {'A','2','3','4','5','6','7','8','9','T','J','Q','K'};
+    for (int i = 0; i < strlen(ranks); ++i) {
+        if (rank == ranks[i]) {
+            return i;
+        }
+    }
+    return -1;              //error rank not found
+}
+
+int moveToSuitStack(Node ** movingHeadCardNode, Node ** suitStack) {
+    int hasEmptyStack = 0;
+    Node * placeHoldMoving = getTail(*movingHeadCardNode);          //only the tail card can be moved to suitStack.
+    Node * placeHoldSuitStack = *suitStack;
+
+    if (placeHoldSuitStack != NULL) {
+        if (placeHoldMoving->card.suit == getTail(placeHoldSuitStack)->card.suit) {     //checking if suits match
+            if (getRankIndex(placeHoldMoving->card.rank) == getRankIndex(getTail(placeHoldSuitStack)->card.rank) + 1) {       //checks if rank of card in placeHoldSuitStack is one rank lower
+                if (placeHoldMoving->prev != NULL) {
+                    if (placeHoldMoving->prev->card.visibility == 0) {
+                        placeHoldMoving->prev->card.visibility = 1;           //reveal next card if hidden
+                    }
+                    placeHoldMoving->prev->next = NULL;             //make the card left after moving movingHeadCardNode new tail
+                } else {
+                    hasEmptyStack = 1;
+                }
+
+                getTail(placeHoldSuitStack)->card.visibility = 0;       //hides the old tail in suitStack to not allow paranormal moves from suitStack afterwards
+                placeHoldMoving->prev = getTail(placeHoldSuitStack);   //make the placeHoldSuitStack become the previous cards for the moved placeHoldMoving
+                getTail(placeHoldSuitStack)->next = placeHoldMoving;   //make the placeHoldSuitStack old tail point to to head in the now moved placeHoldMoving
+
+                if (hasEmptyStack == 1) {
+                    *movingHeadCardNode = NULL;
+                }
+
+                return 0;
+            }
+        }
+    } else {                                //here placeHoldSuitStack == NULL
+        if (placeHoldMoving->card.rank == 'A') {       //for moving and Ace of any suit to empty placeHoldSuitStack
+            if (placeHoldMoving->prev == NULL) {
+                hasEmptyStack = 1;
+            }
+
+            placeHoldMoving->prev = NULL;
+            *suitStack = placeHoldMoving;
+
+            if (hasEmptyStack == 1) {
+                *movingHeadCardNode = NULL;
+            }
+
+            return 0;   //success
+        }
+    }
+    return -1;          //failure
+}
+
+/// \param subHead      : The address of the first card in the subStack, that is to be moved
+/// \param moveToStack  : The address of the head of the stack that the subStack is to be moved to
+/// \return             : Returns 0 if success. Less than 0 if failure.
+int moveSubStack(Node ** subHead, Node ** moveToStack) {
+    int hasEmptyStack = 0;
+    Node * placeHoldSubStack = *subHead;
+    Node * placeHoldToStack = *moveToStack;
+
+    if (placeHoldToStack == NULL && placeHoldSubStack->card.visibility == 1|| placeHoldSubStack->card.visibility == 1 && getTail(placeHoldToStack)->card.visibility == 1) {                //checks if the interacting cards are visible
+        if (placeHoldToStack == NULL || getCardColor(placeHoldSubStack->card) != getCardColor(getTail(placeHoldToStack)->card)) {          //checks if colors are different
+            if (placeHoldToStack == NULL || getRankIndex(placeHoldSubStack->card.rank) == getRankIndex(getTail(placeHoldToStack)->card.rank) - 1)  {     //checks if the first card in moved stack is one rank lower than the card moved to.
+                //if the card left above the moved subStack is hidden, reveal it.
+                if (placeHoldSubStack->prev != NULL) {
+                    if (placeHoldSubStack->prev->card.visibility == 0) {
+                        placeHoldSubStack->prev->card.visibility = 1;
+                    }
+                    placeHoldSubStack->prev->next = NULL;             //make the card left after moving subStack new tail
+                } else {
+                    hasEmptyStack = 1;
+                }
+
+                if (placeHoldToStack == NULL) {
+                    placeHoldSubStack->prev = NULL;
+                    *moveToStack = placeHoldSubStack;               //makes the new subStack the previously empty pile's new stack.
+                } else {
+                    placeHoldSubStack->prev = getTail(placeHoldToStack);   //make the movedToStack become the previous cards for the moved subStack
+                    getTail(placeHoldToStack)->next = placeHoldSubStack;   //make the movedToStacks old tail point to to head in the now moved subStack
+                }
+
+                if (hasEmptyStack == 1) {
+                    *subHead = NULL;
+                }
+
+                return 0;       //success
+
+            }  else {
+                return -3;  //error card ranks are not compatible for movement
+            }
+        } else {
+            return -2;      //error cards are same color
+        }
+    } else {
+        return -1;          //error movement between non-visible cards
+    }
+}
+
+//todo make moveCardFromSuitStack
+
+
+//____________________________________________Game card movement__________________________________________________________^^^
+
+
+
 void run(){
 
     char * command;
@@ -351,6 +472,7 @@ void run(){
 
 int main() {
 
+
 //    printCurrentBoard();
 //
 //    distributeDeckForStartPosition(createTestDeck());
@@ -401,7 +523,6 @@ int main() {
     static Node * c7;
 
 
-
     //Stacks for the 4 suit piles
     static Node * sC;
     static Node * sD;
@@ -420,13 +541,9 @@ int main() {
 
 //    printf("\n\n");
 
+    distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
 
-
-
-
-        distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
-
-        setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
+    setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
 
 //    printDeck(c2);
 
@@ -434,17 +551,54 @@ int main() {
 //    getTail(sS)->prev->next = NULL;
 //    printDeck(sS);
 
-        printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
+
+    printNode(getFromTail(c7,4));
+    Node * subS = getFromTail(c7,4);
+    moveSubStack(&subS,&c6);     //test for moving subStack 7C from c7 to 8D in c6
+
+    moveSubStack(&c4,&c3);
+
+    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
+
+    printf("c7 tail:                    ");
+    printNode(getTail(c7));
+    printf("c6 tail:                    ");
+    printNode(getTail(c6));
+    printf("c6 moved card:              ");
+    printNode(getFromTail(c6,4));
+    printf("c6 card before moved card:  ");
+    printNode(getFromTail(c6,5));
+
+    printNode(getTail(c2));
 
 
-        printf("\n\n");
-        printf("count: %d",countElements(testHead));
+    moveSubStack(&c1,&c4);
+
+    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
+
+
+    moveSubStack(&c2,&c1);
+
+    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
 
     /*printf("\nVisibility 1st card before: %i\n", getFromHead(c3,0)->card.visibility );
     printf("Visibility 2nd card before: %i\n", getFromHead(c3,0)->next->card.visibility );
     hideCards(c3, 2);
     printf("Visibility 1st card after: %i\n", getFromHead(c3,0)->card.visibility);
     printf("Visibility 2nd card after: %i\n", getFromHead(c3,0)->next->card.visibility);*/
+
+
+    //for testing moving to suitStacks.
+    Node *nodeAceHearts = createNewNode();
+    Card cardAceHearts;
+    setCard(&cardAceHearts,'A','H',1);
+    nodeAceHearts->card = cardAceHearts;
+    c1 = nodeAceHearts;
+
+    Node * tmp = getTail(c2);
+    moveToSuitStack(&c1,&sS);
+
+    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
 
     return 0;
 }
