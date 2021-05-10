@@ -268,11 +268,59 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
     printf("LAST command: \n");
     printf("Message: \n");
     printf("INPUT > \n");
-
 }
 
 
 //___________________________________________________UI___________________________________________________________________^^^
+
+//____________________________________________Game card movement__________________________________________________________vvv
+
+int getCardColor(Card card) {
+    if (card.suit == 'H' || card.suit == 'D') {
+        return 'r';                                       //char ascii value 114 for 'r'
+    } else if (card.suit == 'C' || card.suit == 'S') {
+        return 'b';                                       //char ascii value 98 for 'b'
+    } else {
+        return -1;
+    }
+}
+int getRankIndex(char rank) {
+    char ranks[] = {'A','2','3','4','5','6','7','8','9','T','J','Q','K'};
+    for (int i = 0; i < strlen(ranks); ++i) {
+        if (rank == ranks[i]) {
+            return i;
+        }
+    }
+    return -1;              //error rank not found
+}
+
+/// \param subHead      : The first card in the stack, that is to be moved
+/// \param moveToStack  : The head of the stack that the subStack is to be moved to
+/// \return             : Returns 0 if success. Less than 0 if failure.
+int moveSubStack(Node * subHead, Node * moveToStack) {
+    if (getCardColor(subHead->card) != getCardColor(getTail(moveToStack)->card)) {          //checks if colors are different
+        //todo make so movement to empty stack works
+        if (getRankIndex(subHead->card.rank) == getRankIndex(getTail(moveToStack)->card.rank)-1)  {     //checks if the first card in moved stack is one rank lower than the card moved to.
+            //if the card left above the moved subStack is hidden, reveal it.
+            if (subHead->prev->card.visibility == 0) {
+                subHead->prev->card.visibility = 1;
+            }
+            subHead->prev->next = NULL;             //make the card left after moving subStack new tail
+
+            subHead->prev = getTail(moveToStack);   //make the movedToStack become the previous cards for the moved subStack
+            getTail(moveToStack)->next = subHead;   //make the movedToStacks old tail point to to head in the now moved subStack
+
+            return 0;
+        }  else {
+            return -2;  //error card ranks are not compatible for movement
+        }
+    } else {
+        return -1;      //error cards are same color
+    }
+    return NULL;
+}
+
+//____________________________________________Game card movement__________________________________________________________^^^
 
 int main() {
 
@@ -353,8 +401,22 @@ int main() {
 //    getTail(sS)->prev->next = NULL;
 //    printDeck(sS);
 
+
+    printNode(getFromTail(c7,4));
+    moveSubStack(getFromTail(c7,4),c6);     //test for moving subStack 7C from c7 to 8D in c6
+
     printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
 
+    printf("c7 tail:                    ");
+    printNode(getTail(c7));
+    printf("c6 tail:                    ");
+    printNode(getTail(c6));
+    printf("c6 moved card:              ");
+    printNode(getFromTail(c6,4));
+    printf("c6 card before moved card:  ");
+    printNode(getFromTail(c6,5));
+
+    printNode(getTail(c2));
 
     printf("\n\n");
     printf("count: %d",countElements(testHead));
