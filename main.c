@@ -7,9 +7,9 @@
 //todo implement function for hiding cards in piles
 // void hideCards(Node ** head, int cardCntToHide)
 // example hideCards(c3,2)   //should change the cards visibility in the first (from head) two node's cards visibility to 0. default visibility should be 1;
-void hideCards(Node * head, int cardCntToHide){
+void hideCards(Node ** head, int cardCntToHide){
     for(int i = 0; i < cardCntToHide; i++){
-        setCard(&getFromHead(head, i)->card, getFromHead(head, i)->card.rank, getFromHead(head, i)->card.suit, 0);
+        setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
     }
 }
 
@@ -82,6 +82,17 @@ void distributeForStart(Node * headOfDeck, Node ** c1, Node ** c2, Node ** c3 , 
     *c7 = getFromTail(headOfDeck,11-1);
     tmp = *c7;
     tmp->prev = NULL;
+}
+
+void setupGame(Node ** c2, Node ** c3, Node ** c4, Node ** c5, Node ** c6, Node ** c7){
+
+    hideCards(c2,1);
+    hideCards(c3,2);
+    hideCards(c4,3);
+    hideCards(c5,4);
+    hideCards(c6,5);
+    hideCards(c7,3);
+
 }
 
 //_______________________________________________Game start_______________________________________________________________^^^
@@ -352,6 +363,8 @@ int main() {
 
     distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
 
+    setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
+
 //    printDeck(c2);
 
 //    sS = createTestDeck();      //test if suitStacks show revealed cards properly
@@ -364,11 +377,11 @@ int main() {
     printf("\n\n");
     printf("count: %d",countElements(testHead));
 
-    printf("\nVisibility 1st card before: %i\n", getFromHead(c3,0)->card.visibility );
+    /*printf("\nVisibility 1st card before: %i\n", getFromHead(c3,0)->card.visibility );
     printf("Visibility 2nd card before: %i\n", getFromHead(c3,0)->next->card.visibility );
     hideCards(c3, 2);
     printf("Visibility 1st card after: %i\n", getFromHead(c3,0)->card.visibility);
-    printf("Visibility 2nd card after: %i\n", getFromHead(c3,0)->next->card.visibility);
+    printf("Visibility 2nd card after: %i\n", getFromHead(c3,0)->next->card.visibility);*/
     return 0;
 }
 
