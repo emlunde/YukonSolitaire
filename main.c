@@ -12,6 +12,9 @@ void hideCards(Node ** head, int cardCntToHide);
 struct node* createNewDeck();
 /// Creates a new shuffled deck and frees the original deck
 Node* shuffleDeck(Node* head);
+
+void printCurrentBoard();
+
 void run();
 //todo implement function for revealing card in pile if remaining card is hidden after move of substack in pile
 // void revealCard(Node ** card)
@@ -81,7 +84,7 @@ void distributeForStart(Node * headOfDeck, Node ** c1, Node ** c2, Node ** c3 , 
 
 /// For setting up the hidden cards to match with the games start position.
 /// The dereference of the pointer to pointer is handled in the hideCards function.
-void setupGame(Node ** c2, Node ** c3, Node ** c4, Node ** c5, Node ** c6, Node ** c7){
+void hideCardsForNewGame(Node ** c2, Node ** c3, Node ** c4, Node ** c5, Node ** c6, Node ** c7){
 
     hideCards(c2,1);
     hideCards(c3,2);
@@ -90,6 +93,12 @@ void setupGame(Node ** c2, Node ** c3, Node ** c4, Node ** c5, Node ** c6, Node 
     hideCards(c6,5);
     hideCards(c7,6);
 
+}
+
+///sets up the game for start
+void setupGame(Node * deckHead,Node ** c1,Node ** c2,Node ** c3,Node ** c4,Node ** c5,Node ** c6,Node ** c7,Node ** sC,Node ** sD,Node ** sH,Node ** sS) {
+    distributeForStart(deckHead,c1,c2,c3,c4,c5,c6,c7);
+    hideCardsForNewGame(c2, c3, c4, c5, c6, c7);
 }
 
 //_______________________________________________Game start_______________________________________________________________^^^
@@ -406,6 +415,49 @@ int moveSubStack(Node ** subHead, Node ** moveToStack) {
 
 //____________________________________________Game card movement__________________________________________________________^^^
 
+///returns 0 if valid, -1 otherwise
+int checkIfSuit(char suit) {
+    char suits[] = {'C','D','H','S'};
+    for (int i = 0; i < (sizeof(suits)/sizeof(suits[0])) ; ++i) {
+        if (suit == suits[i]) {
+            return 0;
+        }
+    }
+    return -1;
+}
+
+///returns 0 if valid, -1 otherwise
+int checkIfRank(char rank) {
+    char ranks[] = {'A','2','3','4','5','6','7','8','9','T','J','Q','K'};
+    for (int i = 0; i < (sizeof(ranks)/sizeof(ranks[0])) ; ++i) {
+        if (rank == ranks[i]) {
+            return 0;
+        }
+    }
+    return -1;
+}
+
+int validateCmd(char * cmd) {
+    if (!(cmd[0] == 'C' || cmd[0] == 'F')) {        //checks first char in input
+        return -1;
+    }
+    int is2ndChOk = 0;
+    for (int i = 1; i <= 7; ++i) {
+        if (atoi(&cmd[1]) == i) {
+            is2ndChOk = 1;
+        }
+    }
+    if (is2ndChOk != 1 || cmd[2] != ':') {          //checks second and third charin input
+        return -1;
+    }
+    if (checkIfRank(cmd[3]) != 0 || checkIfSuit(cmd[4]) != 0) {     //checks forth
+        return -1;
+    }
+
+    return NULL;
+}
+
+
 
 int main() {
     static Node * c1;
@@ -423,10 +475,22 @@ int main() {
     static Node * sS;
 
     Node* test = createNewDeck();
-    traverseList(test);
-    test = shuffleDeck(test);
-    traverseList(test);
-    //setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
+//    traverseList(test);
+//    test = shuffleDeck(test);
+//    traverseList(test);
+
+    setupGame(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+
+    Node * tmp = getFromTail(c7,4);
+    moveSubStack(&tmp,&c6);
+
+    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
+//    distributeForStart(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7);
+//
+//    hideCardsForNewGame(&c2, &c3, &c4, &c5, &c6, &c7);
+//
+//    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
+
     return 0;
 }
 
@@ -600,13 +664,14 @@ struct node* createNewDeck(){
     } return head;
 }
 void hideCards(Node ** head, int cardCntToHide){
-for(int i = 0; i < cardCntToHide; i++){
-setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
-}
+    for(int i = 0; i < cardCntToHide; i++){
+        setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
+    }
 }
 void run(){
 
     char * command;
+    char * gameCmd;
 
     while (1){
 
@@ -639,10 +704,12 @@ void run(){
             static Node * sS;
 
 
-            setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
+            hideCardsForNewGame(&c2, &c3, &c4, &c5, &c6, &c7);
 
             //play loop
             while (1){
+
+                scanf("%s",&gameCmd);   //TODO can maybe just use command instead of a new variable, gameCmd.
 
 
 
