@@ -11,18 +11,19 @@ struct card
     char rank;          //A,2,3,4,5,6,7,8,9,T,J,Q,K
     int visibility;     //0 means notVisible. 1 means visible.
 };
-struct node  {
-    Card card;
-    Node* next;
-    Node* prev;
-    int index;
-};
 
 void setCard(Card* c, char rank, char suit, int visibility) {
     c->suit = suit;
     c->rank = rank;
     c->visibility = visibility;
 }
+
+struct node  {
+    Card card;
+    Node* next;
+    Node* prev;
+    int index;
+};
 struct node* createNewNode(){
     Node *newNode = (Node*) malloc(sizeof(Node));
     newNode->next=NULL;
@@ -57,8 +58,8 @@ void insertNew(Node* head, Node* new){
 
 //todo: create function for getNodeAndAllFollowingNodes()
 struct node* getNodeAndAllFollowingNodes(){
-
 }
+
 // Gets a pointer to the node in index = int index - is tested with testGetFromIndex()
 struct node* getFromIndex(Node* head, int index){
     while (head!=NULL){
@@ -68,6 +69,7 @@ struct node* getFromIndex(Node* head, int index){
         }
     } return printf("No such node with index: %d",index);
 }
+
 // Gets the tail - is tested with testGetTail() in Tests.h
 struct node* getTail(Node* head){
     Node* tail;
@@ -136,11 +138,12 @@ struct node* deleteNode(Node* head, Node* node){
         head = head->next;
     }
 }
+
 int countElements(Node* head){
-    int count;
+    int count = 0;
     while(head!=NULL){
-    count++;
     head=head->next;
+    count++;
     }
     return count;
 }
@@ -159,4 +162,20 @@ void quickInsertCard(Node* listHead, char rank, char suit) {
 }
 void printNode(Node* node){
     printf("%c%c - Vis:%d - *prev: %8d - *next: %8d - index: \n",node->card.rank,node->card.suit,node->card.visibility,node->prev,node->next,node->index);
+}
+
+Node * getFromTail(Node * head, int cnt) {
+    Node * tmp = getTail(head);
+    for (int i = 0; i < cnt; ++i) {
+        tmp = tmp->prev;
+    }
+    return tmp;
+}
+
+Node * getFromHead(Node * head, int cnt) {
+    Node * tmp = head;
+    for (int i = 0; i < cnt; ++i) {
+        tmp = tmp->next;
+    }
+    return tmp;
 }
