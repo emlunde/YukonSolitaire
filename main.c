@@ -295,28 +295,32 @@ int getRankIndex(char rank) {
 }
 
 /// \param subHead      : The address of the first card in the subStack, that is to be moved
-/// \param moveToStack  : The head of the stack that the subStack is to be moved to
+/// \param moveToStack  : The address of the head of the stack that the subStack is to be moved to
 /// \return             : Returns 0 if success. Less than 0 if failure.
-int moveSubStack(Node ** subHead, Node * moveToStack) {
+int moveSubStack(Node ** subHead, Node ** moveToStack) {
     int hasEmptyStack = 0;
-    Node * placeHolder = *subHead;
+    Node * placeHoldSubStack = *subHead;
+    Node * placeHoldToStack = *moveToStack;
 
-    if (getCardColor(placeHolder->card) != getCardColor(getTail(moveToStack)->card)) {          //checks if colors are different
-        //todo make so movement to empty stack works
-        if (getRankIndex(placeHolder->card.rank) == getRankIndex(getTail(moveToStack)->card.rank) - 1)  {     //checks if the first card in moved stack is one rank lower than the card moved to.
+    if (placeHoldToStack == NULL || getCardColor(placeHoldSubStack->card) != getCardColor(getTail(placeHoldToStack)->card)) {          //checks if colors are different
+        if (placeHoldToStack == NULL || getRankIndex(placeHoldSubStack->card.rank) == getRankIndex(getTail(placeHoldToStack)->card.rank) - 1)  {     //checks if the first card in moved stack is one rank lower than the card moved to.
             //if the card left above the moved subStack is hidden, reveal it.
-            if (placeHolder->prev != NULL) {
-                if (placeHolder->prev->card.visibility == 0) {
-                    placeHolder->prev->card.visibility = 1;
+            if (placeHoldSubStack->prev != NULL) {
+                if (placeHoldSubStack->prev->card.visibility == 0) {
+                    placeHoldSubStack->prev->card.visibility = 1;
                 }
-                placeHolder->prev->next = NULL;             //make the card left after moving subStack new tail
+                placeHoldSubStack->prev->next = NULL;             //make the card left after moving subStack new tail
             } else {
-                //Todo represent empty pile
                 hasEmptyStack = 1;
             }
 
-            placeHolder->prev = getTail(moveToStack);   //make the movedToStack become the previous cards for the moved subStack
-            getTail(moveToStack)->next = placeHolder;   //make the movedToStacks old tail point to to head in the now moved subStack
+            if (placeHoldToStack == NULL) {
+                placeHoldSubStack->prev = NULL;
+                *moveToStack = placeHoldSubStack;               //makes the new subStack the previously empty pile's new stack.
+            } else {
+                placeHoldSubStack->prev = getTail(placeHoldToStack);   //make the movedToStack become the previous cards for the moved subStack
+                getTail(placeHoldToStack)->next = placeHoldSubStack;   //make the movedToStacks old tail point to to head in the now moved subStack
+            }
 
             if (hasEmptyStack == 1) {
                 *subHead = NULL;
@@ -421,9 +425,9 @@ int main() {
 
     printNode(getFromTail(c7,4));
     Node * subS = getFromTail(c7,4);
-    moveSubStack(&subS,c6);     //test for moving subStack 7C from c7 to 8D in c6
+    moveSubStack(&subS,&c6);     //test for moving subStack 7C from c7 to 8D in c6
 
-    moveSubStack(&c4,c3);
+    moveSubStack(&c4,&c3);
 
     printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
 
@@ -438,8 +442,15 @@ int main() {
 
     printNode(getTail(c2));
 
-    printf("\n\n");
-    printf("count: %d",countElements(testHead));
+
+    moveSubStack(&c1,&c4);
+
+    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
+
+
+    moveSubStack(&c2,&c1);
+
+    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
 
     return 0;
 }
