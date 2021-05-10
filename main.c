@@ -425,17 +425,16 @@ void run(){
         printf("Please enter a valid command: \n");
         scanf("%s", &command);
 
+        //Deck for playing
         Node * deckOfCardsHead = createTestDeck();
 
         if(!strcmp(command,"SW")){
             printDeck(deckOfCardsHead);
-        }
+        } else if(!strcmp(command,"SR")){
 
-        if(!strcmp(command,"SR")){
-
-        }
-
-        if(!strcmp(command, "P")){
+        } else if (!strcmp(command, "QQ")){
+            break;
+        } else if(!strcmp(command, "P")){
             //Stacks for the 7 game piles
             static Node * c1;
             static Node * c2;
@@ -445,8 +444,6 @@ void run(){
             static Node * c6;
             static Node * c7;
 
-
-
             //Stacks for the 4 suit piles
             static Node * sC;
             static Node * sD;
@@ -454,9 +451,9 @@ void run(){
             static Node * sS;
 
 
-
             setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
 
+            //play loop
             while (1){
 
 
@@ -464,12 +461,7 @@ void run(){
                 if (!strcmp(command, "Q")){
                     break;
                 }
-
             }
-        }
-
-        if (!strcmp(command, "QQ")){
-            break;
         }
     }
 }
