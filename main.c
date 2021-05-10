@@ -290,6 +290,55 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
 
 //___________________________________________________UI___________________________________________________________________^^^
 
+void run(){
+
+    char * command;
+
+    while (1){
+
+        printf("Please enter a valid command: \n");
+        scanf("%s", &command);
+
+        if(!strcmp(command, "P")){
+            //Stacks for the 7 game piles
+            static Node * c1;
+            static Node * c2;
+            static Node * c3;
+            static Node * c4;
+            static Node * c5;
+            static Node * c6;
+            static Node * c7;
+
+
+
+            //Stacks for the 4 suit piles
+            static Node * sC;
+            static Node * sD;
+            static Node * sH;
+            static Node * sS;
+
+
+            Node * testHead = createTestDeck();
+
+            setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
+
+            while (1){
+
+
+
+                if (!strcmp(command, "Q")){
+                    break;
+                }
+
+            }
+        }
+
+        if (!strcmp(command, "QQ")){
+            break;
+        }
+    }
+}
+
 int main() {
 
 //    printCurrentBoard();
@@ -361,9 +410,13 @@ int main() {
 
 //    printf("\n\n");
 
-    distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
 
-    setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
+
+
+
+        distributeForStart(testHead, &c1, &c2, &c3,&c4,&c5,&c6,&c7);
+
+        setupGame(&c2,&c3,&c4,&c5,&c6,&c7);
 
 //    printDeck(c2);
 
@@ -371,17 +424,18 @@ int main() {
 //    getTail(sS)->prev->next = NULL;
 //    printDeck(sS);
 
-    printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
+        printCurrentBoard(c1, c2, c3, c4, c5, c6, c7, sC, sD, sH, sS);
 
 
-    printf("\n\n");
-    printf("count: %d",countElements(testHead));
+        printf("\n\n");
+        printf("count: %d",countElements(testHead));
 
     /*printf("\nVisibility 1st card before: %i\n", getFromHead(c3,0)->card.visibility );
     printf("Visibility 2nd card before: %i\n", getFromHead(c3,0)->next->card.visibility );
     hideCards(c3, 2);
     printf("Visibility 1st card after: %i\n", getFromHead(c3,0)->card.visibility);
     printf("Visibility 2nd card after: %i\n", getFromHead(c3,0)->next->card.visibility);*/
+
     return 0;
 }
 
