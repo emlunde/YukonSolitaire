@@ -781,6 +781,7 @@ void run(){
     }
 }
 
+//todo ** is probably unnecessary. Can maybe be changed to * in both parameters and return. Then an & is just used with the returned * later.
 Node ** pickStacks(char stackCh1,char stackCh2,Node ** c1,Node ** c2,Node ** c3,Node ** c4,Node ** c5,Node ** c6,Node ** c7,Node ** sC,Node ** sD,Node ** sH,Node ** sS) {
 
     if (stackCh1 == 'C' && stackCh2 == '1') {
