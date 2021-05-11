@@ -1,40 +1,328 @@
-#include "Commands.h"
 #include "DoublyLinkedList.h"
 #include "Tests.h"
 #include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
 
+
+struct node* createNewDeck();
+void hideCards(Node ** head, int cardCntToHide);
+void distributeForStart(Node * headOfDeck, Node ** c1, Node ** c2, Node ** c3 , Node ** c4 , Node ** c5 , Node ** c6 , Node ** c7);
+void hideCardsForNewGame(Node ** c2, Node ** c3, Node ** c4, Node ** c5, Node ** c6, Node ** c7);
+void setupGame(Node * deckHead,Node ** c1,Node ** c2,Node ** c3,Node ** c4,Node ** c5,Node ** c6,Node ** c7,Node ** sC,Node ** sD,Node ** sH,Node ** sS);
+Node* shuffleDeck(Node* head);
+void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, Node * c6, Node * c7, Node * sC, Node * sD, Node * sH, Node * sS);
+int getCardColor(Card card);
+int getRankIndex(char rank);
+int moveToSuitStack(Node ** movingHeadCardNode, Node ** suitStack);
+int moveSubStack(Node ** subHead, Node ** moveToStack);
+int checkIfSuit(char suit);
+int checkIfRank(char rank);
+int validateCmd(char * cmd);
+Node ** pickStacks(char stackCh1,char stackCh2,Node ** c1,Node ** c2,Node ** c3,Node ** c4,Node ** c5,Node ** c6,Node ** c7,Node ** sC,Node ** sD,Node ** sH,Node ** sS);
+void run();
+
+
+int main() {
+//    static Node * c1;
+//    static Node * c2;
+//    static Node * c3;
+//    static Node * c4;
+//    static Node * c5;
+//    static Node * c6;
+//    static Node * c7;
+//
+//    //Stacks for the 4 suit piles
+//    static Node * sC;
+//    static Node * sD;
+//    static Node * sH;
+//    static Node * sS;
+//
+//    Node* test = createNewDeck();
+////    traverseList(test);
+////    test = shuffleDeck(test);
+////    traverseList(test);
+//
+//    setupGame(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+//
+//    Node * tmp = getFromTail(c7,4);
+//    moveSubStack(&tmp,&c6);
+//
+//    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
+////    distributeForStart(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7);
+////
+////    hideCardsForNewGame(&c2, &c3, &c4, &c5, &c6, &c7);
+////
+////    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
+    char * command = "P";
+    int i = strcmp(command, "P");
+    //printf("test %d command: %s", i, command);
+
+    run();
+
+    return 0;
+}
+
+void run(){
+
+    int willShuffle = 0;
+    char command[2];
+    char gameCmd[9];
+
+    while (1){
+
+        printf("Please enter a valid command: \n");
+        scanf("%s", &command);
+        int i = 0;
+        while(command[i] != '\0') {             //makes user input independent
+            char ch = command[i];
+            command[i] = (char) toupper(ch);
+//            printf("%c",toupper(ch));
+            i++;
+        }
+
+        //Deck for playing
+        Node * deckOfCardsHead;
+
+        if (willShuffle == 0) {
+            deckOfCardsHead = createNewDeck();
+        } else {
+            deckOfCardsHead = shuffleDeck(createNewDeck());
+        }
+
+        if(!strcmp(command,"SW")){
+            printDeck(deckOfCardsHead);
+            printf("\n");
+        } else if(!strcmp(command,"SR")){
+            willShuffle = 1;
+//            deckOfCardsHead = shuffleDeck(deckOfCardsHead);
+        } else if (!strcmp(command, "QQ")){
+            break;
+        } else if(!strcmp(command, "P")){
+
+            //Stacks for the 7 game piles
+            static Node * c1;
+            static Node * c2;
+            static Node * c3;
+            static Node * c4;
+            static Node * c5;
+            static Node * c6;
+            static Node * c7;
+
+            //Stacks for the 4 suit piles
+            static Node * sC;
+            static Node * sD;
+            static Node * sH;
+            static Node * sS;
+
+
+            setupGame(deckOfCardsHead,&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+
+            //play loop
+            while (1){
+
+                printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
+
+                printf("Please enter a valid move in the form: [fromStack]:[movingCard]->[destStack]\n"
+                       "e.g. C4:8H->C3 which would try to move 8 of Hearts from pile C4 to pile C3.\n");
+
+                //for testing, give cmd: C7:7C->C6
+                scanf("%s",&gameCmd);   //TODO can maybe just use command instead of a new variable, gameCmd.
+                i = 0;
+                while(gameCmd[i] != '\0') {         //makes user input independent
+                    char ch = gameCmd[i];
+                    gameCmd[i] = (char) toupper(ch);
+                    i++;
+                }
+
+
+                if(validateCmd(gameCmd) == 0) {                 //move to pile
+                    char stackName[2];
+                    Node ** fromStackPtr;
+                    Node * subStackPtr;
+                    Node ** destStackPtr;
+
+                    fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+                    subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
+                    destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+
+                    //todo make error handling if function returns other than 0. And prompt user with invalid move message.
+                    int errorCode = moveSubStack(&subStackPtr,destStackPtr);
+                    if (errorCode != 0) {
+                        //print invalid move message
+                        printf("ERROR: illegal move");
+                    }
+
+                } else if (validateCmd(gameCmd) == 2) {         //move to suitStack
+                    char stackName[2];
+                    Node ** fromStackPtr;
+                    Node * subStackPtr;
+                    Node ** destStackPtr;
+
+                    fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+                    subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
+                    destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+
+                    //todo make error handling if function returns other than 0. And prompt user with invalid move message.
+                    int errorCode = moveToSuitStack(&subStackPtr,destStackPtr);
+                    if (errorCode != 0) {
+                        //print invalid move message
+                        printf("ERROR: illegal move");
+                    }
+
+
+                    //win condition. All cards are moved to suit stacks
+                    if (subStackPtr->card.rank == 'K') {         //only needs to check if game is won if moved card is a king
+                        if (getTail(sC)->card.rank == 'K' && getTail(sD)->card.rank == 'K' && getTail(sH)->card.rank == 'K' && getTail(sS)->card.rank == 'K') {
+                            printf("YOU WIN!");
+                            break;
+                        }
+                    }
+
+                } else {
+                    //redo loop, with failure feedback prompt invalid move
+                }
+
+                if (!strcmp(command, "Q")){
+                    break;
+                }
+            }
+        }
+    }
+}
+
+//_______________________________________________Game start_______________________________________________________________vvv
+/// Creates a fresh 52-card new deck in ascending order (non-shuffled)
+struct node* createNewDeck(){
+    Node* head = createNewNode();
+    Card temp_card;
+    Node* temp;
+    temp_card.visibility=1;
+    // A setup of for-loops creates the 13 cards from each of the 4 suits
+    for(int index=1; index<=4; index++){
+        if(index==1) temp_card.suit = 'C';
+        if(index==2) temp_card.suit = 'D';
+        if(index==3) temp_card.suit = 'H';
+        if(index==4) temp_card.suit = 'S';
+
+        for(int i=0; i<=13; i++){
+
+            // For assigning the aces card in the respective suit
+            if(i==0 && index==1){
+                temp_card.rank ='A';
+                head->card = temp_card;
+            } else if(index>=1&&i==0){
+                temp_card.rank = 'A';
+                temp = createNewNode();
+                temp->card = temp_card;
+                insertNew(head,temp);
+            }
+            // For cards 2 through K in the specific suit
+            if(i>0){
+                switch(i) {
+                    case 1:
+                        break;
+
+                    case 2:
+                        temp_card.rank = '2';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 3:
+                        temp_card.rank = '3';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 4:
+                        temp_card.rank = '4';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 5:
+                        temp_card.rank = '5';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 6:
+                        temp_card.rank = '6';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 7:
+                        temp_card.rank = '7';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 8:
+                        temp_card.rank = '8';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 9:
+                        temp_card.rank = '9';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 10:
+                        temp_card.rank = 'T';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 11:
+                        temp_card.rank = 'J';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 12:
+                        temp_card.rank = 'Q';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    case 13:
+                        temp_card.rank = 'K';
+                        temp = createNewNode();
+                        temp->card = temp_card;
+                        insertNew(head,temp);
+                        break;
+
+                    default:
+                        printf("Switch case ran default option - something went wrong \n");
+                }
+            }
+        }
+    } return head;
+}
 
 /// \param head             : The first card in the pile which is to get it's cards hidden.
 /// \param cardCntToHide    : The number of cards to be hidden, counting from head
-void hideCards(Node ** head, int cardCntToHide);
-/// Creates a fresh 52-card new deck in ascending order (non-shuffled)
-struct node* createNewDeck();
-/// Creates a new shuffled deck and frees the original deck
-Node* shuffleDeck(Node* head);
-
-Node ** pickStacks(char stackCh1,char stackCh2,Node ** c1,Node ** c2,Node ** c3,Node ** c4,Node ** c5,Node ** c6,Node ** c7,Node ** sC,Node ** sD,Node ** sH,Node ** sS);
-void printCurrentBoard();
-
-void run();
-//todo implement function for revealing card in pile if remaining card is hidden after move of substack in pile
-// void revealCard(Node ** card)
-// example: revealCard(&getTail(c2)); //where c2 is the remaining cards after substack is moved from c2
-
-//todo implement function moving substacks between piles
-// should move the last (from tail) cards to another stack
-// change the next and prev attribs for the nodes.
-// example of use: moveSubStack(getNodeFromCardRankAndSuit(c1, 8, H), c2)       //should change the node holding card 8H to hold getTail(c2) as next,
-//                                                                              // and set the node which previously had the 8H card node as next to now have next = NULL
-
-//todo implement function for moving cards to suitStacks, with proper valid-move-checks
-// allow the tail from the stacks to be moved to the suitstacks if the move is according to the yukon game rules.
-// could maybe just use moveSubStack(getTail(c3), sH) to move 1 card from c3 to sH, suitstack hearts.
-//                                     Could return 1 if valid move is done, and 0 if move was invalid, and not completed.
-
-
-
-//_______________________________________________Game start_______________________________________________________________vvv
+void hideCards(Node ** head, int cardCntToHide){
+    for(int i = 0; i < cardCntToHide; i++){
+        setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
+    }
+}
 
 /// Function for splitting up the cardDeck to the 7 piles. Should match with the startposition.
 /// \param headOfDeck: should be a full 52 set deck of cards. Can be shuffled or unshuffled.
@@ -101,13 +389,62 @@ void setupGame(Node * deckHead,Node ** c1,Node ** c2,Node ** c3,Node ** c4,Node 
     distributeForStart(deckHead,c1,c2,c3,c4,c5,c6,c7);
     hideCardsForNewGame(c2, c3, c4, c5, c6, c7);
 }
-
 //_______________________________________________Game start_______________________________________________________________^^^
 
+//__________________________________________Deck manipulation_____________________________________________________________vvv
+/// Creates a new shuffled deck and frees the original deck
+Node* shuffleDeck(Node* head) {
+    int deckSize = countElements(head);
+    int randomNumbers[deckSize];
+    int generatedNumbers = 0;
+    int hasOccured;
+
+    for(int i = 0; i<deckSize;i++){
+        randomNumbers[i]=-1;
+    }
+
+    while (generatedNumbers < deckSize) {
+        int random = rand() % deckSize;
+        hasOccured=0;
+        for (int i=0; i < deckSize; i++) {
+            if (random == randomNumbers[i]) {
+                hasOccured = 1;
+                continue;
+            }
+        }
+        if (hasOccured == 0) {
+            randomNumbers[generatedNumbers] = random;
+            generatedNumbers++;
+            continue;
+        }
+    }
+    /*
+     * Takes a random int from randomNumbers[i] and adds the corresponding Node to newDeck.
+     */
+    Node* newDeck = createNewNode();
+    Node* temp;
+    for (int i = 0; i < deckSize; ++i) {
+        if(i==0){
+            setCard(&newDeck->card, getFromHead(head,randomNumbers[i])->card.rank,getFromHead(head,randomNumbers[i])->card.suit,getFromHead(head,randomNumbers[i])->card.visibility);
+        }
+        if(i>0 && i<=deckSize){
+            temp = createNewNode();
+            setCard(&temp->card, getFromHead(head,randomNumbers[i])->card.rank,getFromHead(head,randomNumbers[i])->card.suit,getFromHead(head,randomNumbers[i])->card.visibility);
+            insertNew(newDeck,temp);
+        }
+    }
+    // free() original unshuffled list
+    while(head!=NULL){
+        temp = head;
+        head = head->next;
+        deleteNode(head,temp);
+    }
+    return newDeck;
+}
+//__________________________________________Deck manipulation_____________________________________________________________^^^
 
 //___________________________________________________UI___________________________________________________________________vvv
-
-void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, Node * c6, Node * c7, Node * sC, Node * sD, Node * sH, Node * sS){
+void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, Node * c6, Node * c7, Node * sC, Node * sD, Node * sH, Node * sS) {
 
     printf("\tC1\tC2\tC3\tC4\tC5\tC6\tC7\n\n");
 
@@ -293,12 +630,10 @@ void printCurrentBoard(Node * c1, Node * c2, Node * c3, Node * c4, Node * c5, No
     printf("INPUT > \n");
 
 }
-
-
 //___________________________________________________UI___________________________________________________________________^^^
 
 //____________________________________________Game card movement__________________________________________________________vvv
-
+//_________________tools in program___________________________________vvv
 int getCardColor(Card card) {
     if (card.suit == 'H' || card.suit == 'D') {
         return 'r';                                       //char ascii value 114 for 'r'
@@ -317,7 +652,7 @@ int getRankIndex(char rank) {
     }
     return -1;              //error rank not found
 }
-
+//_________________tools in program___________________________________^^^
 int moveToSuitStack(Node ** movingHeadCardNode, Node ** suitStack) {
     int hasEmptyStack = 0;
 
@@ -414,12 +749,9 @@ int moveSubStack(Node ** subHead, Node ** moveToStack) {
         return -1;          //error movement between non-visible cards
     }
 }
-
-//todo make moveCardFromSuitStack
-
-
 //____________________________________________Game card movement__________________________________________________________^^^
 
+//__________________________________________________Validation____________________________________________________________vvv
 ///returns 0 if valid, -1 otherwise
 int checkIfSuit(char suit) {
     char suits[] = {'C','D','H','S'};
@@ -481,330 +813,7 @@ int validateCmd(char * cmd) {
     return -3;              //an unexpected error occurred
 }
 
-
-
-int main() {
-//    static Node * c1;
-//    static Node * c2;
-//    static Node * c3;
-//    static Node * c4;
-//    static Node * c5;
-//    static Node * c6;
-//    static Node * c7;
-//
-//    //Stacks for the 4 suit piles
-//    static Node * sC;
-//    static Node * sD;
-//    static Node * sH;
-//    static Node * sS;
-//
-//    Node* test = createNewDeck();
-////    traverseList(test);
-////    test = shuffleDeck(test);
-////    traverseList(test);
-//
-//    setupGame(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
-//
-//    Node * tmp = getFromTail(c7,4);
-//    moveSubStack(&tmp,&c6);
-//
-//    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
-////    distributeForStart(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7);
-////
-////    hideCardsForNewGame(&c2, &c3, &c4, &c5, &c6, &c7);
-////
-////    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
-    char * command = "P";
-    int i = strcmp(command, "P");
-    //printf("test %d command: %s", i, command);
-
-    run();
-
-    return 0;
-}
-
-Node* shuffleDeck(Node* head){
-    int deckSize = countElements(head);
-    int randomNumbers[deckSize];
-    int generatedNumbers = 0;
-    int hasOccured;
-
-    for(int i = 0; i<deckSize;i++){
-        randomNumbers[i]=-1;
-    }
-
-    while (generatedNumbers < deckSize) {
-        int random = rand() % deckSize;
-        hasOccured=0;
-        for (int i=0; i < deckSize; i++) {
-            if (random == randomNumbers[i]) {
-                hasOccured = 1;
-                continue;
-            }
-        }
-        if (hasOccured == 0) {
-            randomNumbers[generatedNumbers] = random;
-            generatedNumbers++;
-            continue;
-        }
-    }
-    /*
-     * Takes a random int from randomNumbers[i] and adds the corresponding Node to newDeck.
-     */
-    Node* newDeck = createNewNode();
-    Node* temp;
-    for (int i = 0; i < deckSize; ++i) {
-     if(i==0){
-         setCard(&newDeck->card, getFromHead(head,randomNumbers[i])->card.rank,getFromHead(head,randomNumbers[i])->card.suit,getFromHead(head,randomNumbers[i])->card.visibility);
-     }
-        if(i>0 && i<=deckSize){
-        temp = createNewNode();
-        setCard(&temp->card, getFromHead(head,randomNumbers[i])->card.rank,getFromHead(head,randomNumbers[i])->card.suit,getFromHead(head,randomNumbers[i])->card.visibility);
-        insertNew(newDeck,temp);
-        }
-    }
-    // free() original unshuffled list
-    while(head!=NULL){
-        temp = head;
-        head = head->next;
-        deleteNode(head,temp);
-    }
-    return newDeck;
-}
-struct node* createNewDeck(){
-    Node* head = createNewNode();
-    Card temp_card;
-    Node* temp;
-    temp_card.visibility=1;
-    // A setup of for-loops creates the 13 cards from each of the 4 suits
-    for(int index=1; index<=4; index++){
-        if(index==1) temp_card.suit = 'C';
-        if(index==2) temp_card.suit = 'D';
-        if(index==3) temp_card.suit = 'H';
-        if(index==4) temp_card.suit = 'S';
-
-        for(int i=0; i<=13; i++){
-
-            // For assigning the aces card in the respective suit
-            if(i==0 && index==1){
-                temp_card.rank ='A';
-                head->card = temp_card;
-            } else if(index>=1&&i==0){
-                temp_card.rank = 'A';
-                temp = createNewNode();
-                temp->card = temp_card;
-                insertNew(head,temp);
-            }
-            // For cards 2 through K in the specific suit
-            if(i>0){
-                switch(i) {
-                    case 1:
-                        break;
-
-                    case 2:
-                        temp_card.rank = '2';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 3:
-                        temp_card.rank = '3';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 4:
-                        temp_card.rank = '4';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 5:
-                        temp_card.rank = '5';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 6:
-                        temp_card.rank = '6';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 7:
-                        temp_card.rank = '7';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 8:
-                        temp_card.rank = '8';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 9:
-                        temp_card.rank = '9';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 10:
-                        temp_card.rank = 'T';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 11:
-                        temp_card.rank = 'J';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 12:
-                        temp_card.rank = 'Q';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    case 13:
-                        temp_card.rank = 'K';
-                        temp = createNewNode();
-                        temp->card = temp_card;
-                        insertNew(head,temp);
-                        break;
-
-                    default:
-                        printf("Switch case ran default option - something went wrong \n");
-                }
-            }
-        }
-    } return head;
-}
-void hideCards(Node ** head, int cardCntToHide){
-    for(int i = 0; i < cardCntToHide; i++){
-        setCard(&getFromHead(*head, i)->card, getFromHead(*head, i)->card.rank, getFromHead(*head, i)->card.suit, 0);
-    }
-}
-void run(){
-
-    char command[2];
-    char gameCmd[9];
-
-    while (1){
-
-        printf("Please enter a valid command: \n");
-        scanf("%s", &command);
-
-        //Deck for playing
-        Node * deckOfCardsHead = createNewDeck();
-
-        if(!strcmp(command,"SW")){
-            printDeck(deckOfCardsHead);
-        } else if(!strcmp(command,"SR")){
-            deckOfCardsHead = shuffleDeck(deckOfCardsHead);
-        } else if (!strcmp(command, "QQ")){
-            break;
-        } else if(!strcmp(command, "P")){
-
-            //Stacks for the 7 game piles
-            static Node * c1;
-            static Node * c2;
-            static Node * c3;
-            static Node * c4;
-            static Node * c5;
-            static Node * c6;
-            static Node * c7;
-
-            //Stacks for the 4 suit piles
-            static Node * sC;
-            static Node * sD;
-            static Node * sH;
-            static Node * sS;
-
-
-            setupGame(deckOfCardsHead,&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
-
-            //play loop
-            while (1){
-
-                printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
-
-                //todo print message to user explaining that we need a move in the form of
-                // [fromStack]:[movingCard]->[destStack] fx C4:H7->C3
-                printf("Please enter a valid move in the form: [fromStack]:[movingCard]->[destStack]\n");
-
-                //for testing, give cmd: C7:7C->C6
-                scanf("%s",&gameCmd);   //TODO can maybe just use command instead of a new variable, gameCmd.
-
-
-                if(validateCmd(gameCmd) == 0) {                 //move to pile
-                    char stackName[2];
-                    Node ** fromStackPtr;
-                    Node * subStackPtr;
-                    Node ** destStackPtr;
-
-                    fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
-                    subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
-                    destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
-
-                    //todo make error handling if function returns other than 0. And prompt user with invalid move message.
-                    int errorCode = moveSubStack(&subStackPtr,destStackPtr);
-                    if (errorCode != 0) {
-                        //print invalid move message
-                        printf("ERROR: illegal move");
-                    }
-
-                } else if (validateCmd(gameCmd) == 2) {         //move to suitStack
-                    char stackName[2];
-                    Node ** fromStackPtr;
-                    Node * subStackPtr;
-                    Node ** destStackPtr;
-
-                    fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
-                    subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
-                    destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
-
-                    //todo make error handling if function returns other than 0. And prompt user with invalid move message.
-                    int errorCode = moveToSuitStack(&subStackPtr,destStackPtr);
-                    if (errorCode != 0) {
-                        //print invalid move message
-                        printf("ERROR: illegal move");
-                    }
-
-
-                    //win condition. All cards are moved to suit stacks
-                    if (subStackPtr->card.rank == 'K') {         //only needs to check if game is won if moved card is a king
-                        if (getTail(sC)->card.rank == 'K' && getTail(sD)->card.rank == 'K' && getTail(sH)->card.rank == 'K' && getTail(sS)->card.rank == 'K') {
-                            printf("YOU WIN!");
-                            break;
-                        }
-                    }
-
-                } else {
-                    //redo loop, with failure feedback prompt invalid move
-                }
-
-                if (!strcmp(command, "Q")){
-                    break;
-                }
-            }
-        }
-    }
-}
-
-//todo ** is probably unnecessary. Can maybe be changed to * in both parameters and return. Then an & is just used with the returned * later.
+///translates userInput to selected stack in program. Returns NULL if not found.
 Node ** pickStacks(char stackCh1,char stackCh2,Node ** c1,Node ** c2,Node ** c3,Node ** c4,Node ** c5,Node ** c6,Node ** c7,Node ** sC,Node ** sD,Node ** sH,Node ** sS) {
 
     if (stackCh1 == 'C' && stackCh2 == '1') {
@@ -830,4 +839,7 @@ Node ** pickStacks(char stackCh1,char stackCh2,Node ** c1,Node ** c2,Node ** c3,
     } else if (stackCh1 == 'F' && stackCh2 == '4') {
         return sS;
     }
+    return NULL;
 }
+//__________________________________________________Validation____________________________________________________________^^^
+
