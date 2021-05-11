@@ -13,6 +13,7 @@ struct node* createNewDeck();
 /// Creates a new shuffled deck and frees the original deck
 Node* shuffleDeck(Node* head);
 
+Node ** pickStacks(char stackCh1,char stackCh2,Node ** c1,Node ** c2,Node ** c3,Node ** c4,Node ** c5,Node ** c6,Node ** c7,Node ** sC,Node ** sD,Node ** sH,Node ** sS);
 void printCurrentBoard();
 
 void run();
@@ -319,7 +320,11 @@ int getRankIndex(char rank) {
 
 int moveToSuitStack(Node ** movingHeadCardNode, Node ** suitStack) {
     int hasEmptyStack = 0;
-    Node * placeHoldMoving = getTail(*movingHeadCardNode);          //only the tail card can be moved to suitStack.
+
+    Node * placeHoldMoving = *movingHeadCardNode;
+    if (placeHoldMoving->next != NULL) {            //only the tail card can be moved to suitStack.
+        return -1;
+    }
     Node * placeHoldSuitStack = *suitStack;
 
     if (placeHoldSuitStack != NULL) {
@@ -437,59 +442,83 @@ int checkIfRank(char rank) {
     return -1;
 }
 
+///returns 0 if cmd input is valid syntax
 int validateCmd(char * cmd) {
     if (!(cmd[0] == 'C' || cmd[0] == 'F')) {        //checks first char in input
         return -1;
     }
     int is2ndChOk = 0;
+    int is9thChOk = 0;
     for (int i = 1; i <= 7; ++i) {
         if (atoi(&cmd[1]) == i) {
             is2ndChOk = 1;
         }
+        if (atoi(&cmd[8]) == i) {
+            is9thChOk = 1;
+        }
     }
-    if (is2ndChOk != 1 || cmd[2] != ':') {          //checks second and third charin input
+    if (is2ndChOk != 1 || cmd[2] != ':') {          //checks second and third char input
         return -1;
     }
-    if (checkIfRank(cmd[3]) != 0 || checkIfSuit(cmd[4]) != 0) {     //checks forth
+    if (checkIfRank(cmd[3]) != 0 || checkIfSuit(cmd[4]) != 0) {     //checks forth and fifth character
         return -1;
+    }
+    if (cmd[5] != '-' || cmd[6] != '>') {
+        return -1;
+    }
+    if (!(cmd[7] == 'C' || cmd[7] == 'F')) {
+        return -1;
+    }
+    if (is9thChOk != 1) {
+        return -1;
+    }
+    if (cmd[7] == 'F') {
+        return 2;           //returns 2 if it is a move to a suit stack
+    } else if (cmd[7] == 'C') {
+        return 0;           //returns 0 if it is a move to a pile
     }
 
-    return NULL;
+    return -3;              //an unexpected error occurred
 }
 
 
 
 int main() {
-    static Node * c1;
-    static Node * c2;
-    static Node * c3;
-    static Node * c4;
-    static Node * c5;
-    static Node * c6;
-    static Node * c7;
-
-    //Stacks for the 4 suit piles
-    static Node * sC;
-    static Node * sD;
-    static Node * sH;
-    static Node * sS;
-
-    Node* test = createNewDeck();
-//    traverseList(test);
-//    test = shuffleDeck(test);
-//    traverseList(test);
-
-    setupGame(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
-
-    Node * tmp = getFromTail(c7,4);
-    moveSubStack(&tmp,&c6);
-
-    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
-//    distributeForStart(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7);
+//    static Node * c1;
+//    static Node * c2;
+//    static Node * c3;
+//    static Node * c4;
+//    static Node * c5;
+//    static Node * c6;
+//    static Node * c7;
 //
-//    hideCardsForNewGame(&c2, &c3, &c4, &c5, &c6, &c7);
+//    //Stacks for the 4 suit piles
+//    static Node * sC;
+//    static Node * sD;
+//    static Node * sH;
+//    static Node * sS;
+//
+//    Node* test = createNewDeck();
+////    traverseList(test);
+////    test = shuffleDeck(test);
+////    traverseList(test);
+//
+//    setupGame(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+//
+//    Node * tmp = getFromTail(c7,4);
+//    moveSubStack(&tmp,&c6);
 //
 //    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
+////    distributeForStart(test,&c1,&c2,&c3,&c4,&c5,&c6,&c7);
+////
+////    hideCardsForNewGame(&c2, &c3, &c4, &c5, &c6, &c7);
+////
+////    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
+    char * command = "P";
+    int i = strcmp(command, "P");
+    printf("test %d command: %s", i, command);
+
+    run();
 
     return 0;
 }
@@ -670,8 +699,8 @@ void hideCards(Node ** head, int cardCntToHide){
 }
 void run(){
 
-    char * command;
-    char * gameCmd;
+    char command[2];
+    char gameCmd[9];
 
     while (1){
 
@@ -688,6 +717,7 @@ void run(){
         } else if (!strcmp(command, "QQ")){
             break;
         } else if(!strcmp(command, "P")){
+
             //Stacks for the 7 game piles
             static Node * c1;
             static Node * c2;
@@ -704,19 +734,76 @@ void run(){
             static Node * sS;
 
 
-            hideCardsForNewGame(&c2, &c3, &c4, &c5, &c6, &c7);
+            setupGame(deckOfCardsHead,&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
 
             //play loop
             while (1){
 
+                printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
+
+                //for testing, give cmd: C7:7C->C6
                 scanf("%s",&gameCmd);   //TODO can maybe just use command instead of a new variable, gameCmd.
 
 
+                if(validateCmd(gameCmd) == 0) {                 //move to pile
+                    char stackName[2];
+                    Node ** fromStackPtr;
+                    Node * subStackPtr;
+                    Node ** destStackPtr;
+
+                    fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+                    subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
+                    destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+
+                    moveSubStack(&subStackPtr,destStackPtr);
+
+                } else if (validateCmd(gameCmd) == 2) {         //move to suitStack
+                    char stackName[2];
+                    Node ** fromStackPtr;
+                    Node * subStackPtr;
+                    Node ** destStackPtr;
+
+                    fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+                    subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
+                    destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+
+                    moveToSuitStack(&subStackPtr,destStackPtr);
+
+                } else {
+                    //redo loop, with failure feedback prompt
+                }
 
                 if (!strcmp(command, "Q")){
                     break;
                 }
             }
         }
+    }
+}
+
+Node ** pickStacks(char stackCh1,char stackCh2,Node ** c1,Node ** c2,Node ** c3,Node ** c4,Node ** c5,Node ** c6,Node ** c7,Node ** sC,Node ** sD,Node ** sH,Node ** sS) {
+
+    if (stackCh1 == 'C' && stackCh2 == '1') {
+        return c1;
+    } else if (stackCh1 == 'C' && stackCh2 == '2') {
+        return c2;
+    } else if (stackCh1 == 'C' && stackCh2 == '3') {
+        return c3;
+    } else if (stackCh1 == 'C' && stackCh2 == '4') {
+        return c4;
+    } else if (stackCh1 == 'C' && stackCh2 == '5') {
+        return c5;
+    } else if (stackCh1 == 'C' && stackCh2 == '6') {
+        return c6;
+    } else if (stackCh1 == 'C' && stackCh2 == '7') {
+        return c7;
+    } else if (stackCh1 == 'F' && stackCh2 == '1') {
+        return sC;
+    } else if (stackCh1 == 'F' && stackCh2 == '2') {
+        return sD;
+    } else if (stackCh1 == 'F' && stackCh2 == '3') {
+        return sH;
+    } else if (stackCh1 == 'F' && stackCh2 == '4') {
+        return sS;
     }
 }
