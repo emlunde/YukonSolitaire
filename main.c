@@ -755,6 +755,7 @@ void run(){
                     subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
                     destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
 
+                    //todo make error handling if function returns other than 0. And prompt user with invalid move message.
                     moveSubStack(&subStackPtr,destStackPtr);
 
                 } else if (validateCmd(gameCmd) == 2) {         //move to suitStack
@@ -769,6 +770,15 @@ void run(){
 
                     //todo make error handling if function returns other than 0. And prompt user with invalid move message.
                     moveToSuitStack(&subStackPtr,destStackPtr);
+
+
+                    //win condition. All cards are moved to suit stacks
+                    if (subStackPtr->card.rank == 'K') {         //only needs to check if game is won if moved card is a king
+                        if (getTail(sC)->card.rank == 'K' && getTail(sD)->card.rank == 'K' && getTail(sH)->card.rank == 'K' && getTail(sS)->card.rank == 'K') {
+                            printf("YOU WIN!");
+                            break;
+                        }
+                    }
 
                 } else {
                     //redo loop, with failure feedback prompt
