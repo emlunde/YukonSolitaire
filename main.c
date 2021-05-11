@@ -767,6 +767,7 @@ void run(){
                     subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
                     destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
 
+                    //todo make error handling if function returns other than 0. And prompt user with invalid move message.
                     moveToSuitStack(&subStackPtr,destStackPtr);
 
                 } else {
