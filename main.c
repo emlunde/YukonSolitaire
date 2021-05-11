@@ -516,7 +516,7 @@ int main() {
 ////    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
     char * command = "P";
     int i = strcmp(command, "P");
-    printf("test %d command: %s", i, command);
+    //printf("test %d command: %s", i, command);
 
     run();
 
@@ -743,6 +743,7 @@ void run(){
 
                 //todo print message to user explaining that we need a move in the form of
                 // [fromStack]:[movingCard]->[destStack] fx C4:H7->C3
+                printf("Please enter a valid move in the form: [fromStack]:[movingCard]->[destStack]\n");
 
                 //for testing, give cmd: C7:7C->C6
                 scanf("%s",&gameCmd);   //TODO can maybe just use command instead of a new variable, gameCmd.
@@ -762,6 +763,7 @@ void run(){
                     int errorCode = moveSubStack(&subStackPtr,destStackPtr);
                     if (errorCode != 0) {
                         //print invalid move message
+                        printf("ERROR: illegal move");
                     }
 
                 } else if (validateCmd(gameCmd) == 2) {         //move to suitStack
@@ -778,6 +780,7 @@ void run(){
                     int errorCode = moveToSuitStack(&subStackPtr,destStackPtr);
                     if (errorCode != 0) {
                         //print invalid move message
+                        printf("ERROR: illegal move");
                     }
 
 
