@@ -11,6 +11,12 @@ struct card
     char rank;          //A,2,3,4,5,6,7,8,9,T,J,Q,K
     int visibility;     //0 means notVisible. 1 means visible.
 };
+struct node  {
+    Card card;
+    Node* next;
+    Node* prev;
+    int index;
+};
 
 void setCard(Card* c, char rank, char suit, int visibility) {
     c->suit = suit;
@@ -18,12 +24,7 @@ void setCard(Card* c, char rank, char suit, int visibility) {
     c->visibility = visibility;
 }
 
-struct node  {
-    Card card;
-    Node* next;
-    Node* prev;
-    int index;
-};
+
 struct node* createNewNode(){
     Node *newNode = (Node*) malloc(sizeof(Node));
     newNode->next=NULL;
@@ -105,34 +106,34 @@ struct node* getNodeFromCardRankAndSuit(Node* head, char rank, char suit){
     }   printf("Node not found in list - return 0\n");
     return 0;
 }
-struct node* deleteNode(Node* head, Node* node){
+struct node* deleteNode(Node* head, Node* nodeToDelete){
     struct node* staticHead = head;
     while(head != NULL) {
-        // Checking if node is in the list
-        if (head == node) {
-            // If node==tail
-            if(node->next==NULL){
+        // Checking if nodeToDelete is in the list
+        if (head == nodeToDelete) {
+            // If nodeToDelete==tail
+            if(nodeToDelete->next == NULL){
                 // Node's previous = new tail
-                node->prev->next = NULL;
-                free(node);
+                nodeToDelete->prev->next = NULL;
+                free(nodeToDelete);
                 return staticHead;
             }
-            // If node==head
-            if(node->prev==NULL){
-                node->next->prev = NULL;
-                head = node->next;
-                free(node);
+            // If nodeToDelete==head
+            if(nodeToDelete->prev == NULL){
+                nodeToDelete->next->prev = NULL;
+                head = nodeToDelete->next;
+                free(nodeToDelete);
                 return head;
             }
 
-            // If node != tail || head
-            if((node->next!=NULL&&node->prev!=NULL)){
+            // If nodeToDelete != tail || head
+            if((nodeToDelete->next != NULL && nodeToDelete->prev != NULL)){
                 /* printf("Node found in list - deleting\n");
-                Update pointers & delete node */
-                node->prev->next = node->next;
+                Update pointers & delete nodeToDelete */
+                nodeToDelete->prev->next = nodeToDelete->next;
                 // Update note->next ptr to
-                node->next->prev = node->prev;
-                free(node);
+                nodeToDelete->next->prev = nodeToDelete->prev;
+                free(nodeToDelete);
                 return staticHead;
             }
         }
@@ -165,7 +166,7 @@ void printNode(Node* node){
     printf("%c%c - Vis:%d - *prev: %8d - *next: %8d - index: \n",node->card.rank,node->card.suit,node->card.visibility,node->prev,node->next,node->index);
 }
 
-Node * getFromTail(Node * head, int cnt) {
+struct node * getFromTail(Node * head, int cnt) {
     Node * tmp = getTail(head);
     for (int i = 0; i < cnt; ++i) {
         tmp = tmp->prev;
@@ -173,7 +174,7 @@ Node * getFromTail(Node * head, int cnt) {
     return tmp;
 }
 
-Node * getFromHead(Node * head, int cnt) {
+struct node * getFromHead(Node * head, int cnt) {
     Node * tmp = head;
     for (int i = 0; i < cnt; ++i) {
         tmp = tmp->next;

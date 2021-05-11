@@ -1,5 +1,5 @@
 #include "Commands.h"
-#include "DoublyLinkedListTwo.h"
+#include "DoublyLinkedList.h"
 #include "Tests.h"
 #include <stdlib.h>
 
