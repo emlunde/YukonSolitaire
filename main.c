@@ -115,6 +115,7 @@ void run(){
             static Node * sH;
             static Node * sS;
 
+            Node * sublist;
 
             setupGame(deckOfCardsHead,&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
 
@@ -147,29 +148,39 @@ void run(){
 
                 char stackName[2];
                 Node ** fromStackPtr;
-                Node * subStackPtr;
+//                Node ** subStackPtr;
                 Node ** destStackPtr;
 
                 if(validateCmd(gameCmd) == 0) {                 //move to pile
 
                     fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
-                    subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
+//                    int nrOfEle = countElements(*fromStackPtr);
+
+
+//                    subStackPtr = getNodeFromCardRankAndSuit(fromStackPtr,gameCmd[3],gameCmd[4]);
+                    int cntFromHead = getNumberFromHeadFromCardRankAndSuit(*fromStackPtr, gameCmd[3], gameCmd[4]);
+
                     destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
 
+
+//                    fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
+
                     //Error occurs if function returns other than 0. And user will be prompted with invalid move message.
-                    int errorCode = moveSubStack(&subStackPtr,destStackPtr);
+                    sublist = (*fromStackPtr + cntFromHead * sizeof(*fromStackPtr));    //todo doesnt properly.
+                    int errorCode = moveSubStack(&sublist,destStackPtr);
                     if (errorCode != 0) {
                         illegalMoveCmd = 1;
                     }
+
 
                 } else if (validateCmd(gameCmd) == 2) {         //move to suitStack
 
 
                     fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
-                    subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
+                    fromStackPtr = getNodeFromCardRankAndSuit(fromStackPtr,gameCmd[3],gameCmd[4]);
                     destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
 
-                    int errorCode = moveToSuitStack(&subStackPtr,destStackPtr);
+                    int errorCode = moveToSuitStack(fromStackPtr,destStackPtr);
                     if (errorCode != 0) {
                         illegalMoveCmd = 1;
                     }
@@ -188,6 +199,10 @@ void run(){
                 }
 
                 if (!strcmp(gameCmd, "Q")){
+                    sC = NULL;
+                    sD = NULL;
+                    sH = NULL;
+                    sS = NULL;
                     break;
                 }
             }

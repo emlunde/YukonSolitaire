@@ -96,16 +96,30 @@ struct node* getNodeFromCard(Node* head, Card card){
     }   printf("Node not found in list - return 0\n");
     return 0;
 }
-struct node* getNodeFromCardRankAndSuit(Node* head, char rank, char suit){
+
+int getNumberFromHeadFromCardRankAndSuit(Node * head, char rank, char suit) {
+    int cnt = 0;
     while(head != NULL) {
         // If the card is found in the list ptr to the node containing rank and suit is returned
         if (head->card.rank == rank & head->card.suit == suit) {
-            return head;
+            return cnt;
         }
         head =  head->next;
-    }   printf("Node not found in list - return 0\n");
-    return 0;
+        cnt++;
+    }
+    return -1;
 }
+struct node** getNodeFromCardRankAndSuit(Node** head, char rank, char suit){
+    while((*head) != NULL) {
+        // If the card is found in the list ptr to the node containing rank and suit is returned
+        if ((*head)->card.rank == rank & (*head)->card.suit == suit) {
+            return head;
+        }
+        (*head) =  (*head)->next;
+    }
+    return NULL;
+}
+
 struct node* deleteNode(Node* head, Node* nodeToDelete){
     struct node* staticHead = head;
     while(head != NULL) {
@@ -174,6 +188,13 @@ struct node * getFromTail(Node * head, int cnt) {
     return tmp;
 }
 
+//void setHeadFromTail(Node ** head, int cnt) {
+//    while ((*head)->prev != NULL) {
+//        (*head) = (*head)->prev;
+//    }
+////    return head;
+//}
+
 struct node * getFromHead(Node * head, int cnt) {
     Node * tmp = head;
     for (int i = 0; i < cnt; ++i) {
@@ -181,3 +202,11 @@ struct node * getFromHead(Node * head, int cnt) {
     }
     return tmp;
 }
+
+//struct node ** getFromHead(Node ** head, int cnt) {
+//    Node * tmp = *head;
+//    for (int i = 0; i < cnt; ++i) {
+//        tmp = tmp->next;
+//    }
+//    return ;
+//}
