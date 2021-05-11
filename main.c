@@ -5,7 +5,7 @@
 #include <string.h>
 
 
-
+//Function declarations (they are each assigned further down in the program).
 struct node* createNewDeck();
 void hideCards(Node ** head, int cardCntToHide);
 void distributeForStart(Node * headOfDeck, Node ** c1, Node ** c2, Node ** c3 , Node ** c4 , Node ** c5 , Node ** c6 , Node ** c7);
@@ -55,9 +55,6 @@ int main() {
 ////    hideCardsForNewGame(&c2, &c3, &c4, &c5, &c6, &c7);
 ////
 ////    printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
-    char * command = "P";
-    int i = strcmp(command, "P");
-    //printf("test %d command: %s", i, command);
 
     run();
 
@@ -67,6 +64,8 @@ int main() {
 void run(){
 
     int willShuffle = 0;
+    int invalidGameCmd = 0;
+    int illegalMoveCmd = 0;
     char command[2];
     char gameCmd[9];
 
@@ -124,6 +123,15 @@ void run(){
 
                 printCurrentBoard(c1,c2,c3,c4,c5,c6,c7,sC,sD,sH,sS);
 
+                if (invalidGameCmd == 1) {
+                    printf("ERROR: invalid game command\n");
+                    invalidGameCmd = 0;
+                }
+                if (illegalMoveCmd == 1) {
+                    printf("ERROR: illegal move");
+                    illegalMoveCmd = 0;
+                }
+
                 printf("Please enter a valid move in the form: [fromStack]:[movingCard]->[destStack]\n"
                        "e.g. C4:8H->C3 which would try to move 8 of Hearts from pile C4 to pile C3.\n");
 
@@ -137,43 +145,38 @@ void run(){
                 }
 
 
+                char stackName[2];
+                Node ** fromStackPtr;
+                Node * subStackPtr;
+                Node ** destStackPtr;
+
                 if(validateCmd(gameCmd) == 0) {                 //move to pile
-                    char stackName[2];
-                    Node ** fromStackPtr;
-                    Node * subStackPtr;
-                    Node ** destStackPtr;
 
                     fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
                     subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
                     destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
 
-                    //todo make error handling if function returns other than 0. And prompt user with invalid move message.
+                    //Error occurs if function returns other than 0. And user will be prompted with invalid move message.
                     int errorCode = moveSubStack(&subStackPtr,destStackPtr);
                     if (errorCode != 0) {
-                        //print invalid move message
-                        printf("ERROR: illegal move");
+                        illegalMoveCmd = 1;
                     }
 
                 } else if (validateCmd(gameCmd) == 2) {         //move to suitStack
-                    char stackName[2];
-                    Node ** fromStackPtr;
-                    Node * subStackPtr;
-                    Node ** destStackPtr;
+
 
                     fromStackPtr = pickStacks(gameCmd[0],gameCmd[1],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
                     subStackPtr = getNodeFromCardRankAndSuit(*fromStackPtr,gameCmd[3],gameCmd[4]);
                     destStackPtr = pickStacks(gameCmd[7],gameCmd[8],&c1,&c2,&c3,&c4,&c5,&c6,&c7,&sC,&sD,&sH,&sS);
 
-                    //todo make error handling if function returns other than 0. And prompt user with invalid move message.
                     int errorCode = moveToSuitStack(&subStackPtr,destStackPtr);
                     if (errorCode != 0) {
-                        //print invalid move message
-                        printf("ERROR: illegal move");
+                        illegalMoveCmd = 1;
                     }
 
 
                     //win condition. All cards are moved to suit stacks
-                    if (subStackPtr->card.rank == 'K') {         //only needs to check if game is won if moved card is a king
+                    if (getTail(*destStackPtr)->card.rank == 'K') {         //only needs to check if game is won if moved card is a king
                         if (getTail(sC)->card.rank == 'K' && getTail(sD)->card.rank == 'K' && getTail(sH)->card.rank == 'K' && getTail(sS)->card.rank == 'K') {
                             printf("YOU WIN!");
                             break;
@@ -181,10 +184,10 @@ void run(){
                     }
 
                 } else {
-                    //redo loop, with failure feedback prompt invalid move
+                    invalidGameCmd = 1;
                 }
 
-                if (!strcmp(command, "Q")){
+                if (!strcmp(gameCmd, "Q")){
                     break;
                 }
             }
